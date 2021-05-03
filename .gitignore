@@ -1,0 +1,6 @@
+.env
+__pycache__
+src/__pycache__
+.vscode
+hgs_access_test.py
+get-pip.py

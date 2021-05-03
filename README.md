@@ -25,7 +25,7 @@ The user types "Hi GrandPy! Do you know the address of OpenClassrooms?" in the f
 
 Then a new message appears: "Of course my chick! Here it is: 7 cité Paradis, 75010 Paris." Underneath, a Google Maps map also appears with a marker indicating the requested address.
 
-GrandPy sends a new message: "But did I ever tell you the story of this neighbourhood that saw me in short pants? The Cité Paradis is a public road in the 10th arrondissement of Paris. It is tee-shaped, with one branch leading to 43 rue de Paradis, the second to 57 rue d'Hauteville and the third to a dead end."
+GrandPy sends a new message: "But did I ever tell you the story of this neighbourhood that saw me in short pants? The Cité Paradis is a public road in the 10th arrondissement of Paris. It is tee-shaped, with one branch leading to 43 rue de Paradis, the second to 57 rue d'Hauteville and the third to a dead end. [Read more on Wikipedia]"
 
 
 # CONSTRAINTS #

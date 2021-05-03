@@ -1,0 +1,42 @@
+<!-- grandpybot/templates/index.html -->
+
+{% extends 'template.html' %}
+{% block main %}
+<header>
+    <!-- Placez ici le contenu de l'en-tête de votre page -->
+    <h1>Bienvenue chez GrandPy Bot !</h1>
+    <p>GrandPy a beaucoup voyagé, en France comme à l'étranger, et il est devenu une vraie encyclopédie !</p>
+    <p>Posez-lui des questions sur des lieux ou des monuments, il a plein d'anecdotes à vous raconter ^^</p>
+</header>
+<main>
+    <section id="mainSection">
+        <section id="textSection">
+            <h2>Vos questions et les réponses de GrandPy</h2>
+                <p id="chat">
+                    {{ wiki_extract }}
+                </p>
+        </section>
+        <section id="mapSection">
+            <h2>Situez "{{ wiki_title }}" sur une carte : </h2>
+            <div id="mapContainer"></div>
+        </section>
+    </section>
+    <section id="inputSection">
+        <label for="userQuestion">Posez votre question ici :</label>
+        <form id="user-question-form">
+            <div><input type="text" name="userQuestion" id="userQuestion" placeholder="Ma question sur un lieu ou un monument, exemple : que peux-tu me dire à propos de la Tour Eiffel ?" /></div>
+            <div><button type="submit" id="submitButton" onClick="getQuestion()">Envoyer</button></div>
+        </form>
+    </section>
+</main>
+<footer>
+    <!-- Placez ici le contenu du pied de page -->
+</footer>
+<script type="text/javascript">
+    window.appConfig = {
+    apikey: '{{ apikey }}',
+    lat: {{ map_coord[0] }},
+    lon: {{ map_coord[1] }}
+    }
+</script>
+{% endblock main %}
