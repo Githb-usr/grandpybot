@@ -1,104 +1,111 @@
-// Récupération de la question posée + affichage de la réponse (via AJAX)
-  let form = document.querySelector("#user-question-form")
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    // Envoyer le contenu du formulaire au serveur
-    let question = document.getElementById('userQuestion').value;
-    let url = `http://127.0.0.1:5000/question?q=${question}`
-    fetch(url)
-    .then(function(response) { 
-      if(response.ok) {
-        response.json()
-        .then(function(data) {
-          const chat = document.getElementById('chat');
-          chat.innerHTML = data[1]
-        })
+const API_URL = "http://127.0.0.1:5000";
+const WIKI_URL = "https://fr.wikipedia.org/wiki";
+const MAP_URL = "https://geocode.search.hereapi.com/v1/geocode";
 
-      } else {
-        console.log('ça marche pas')
-      }
-    })
-    .catch(error => console.log(error))
+// Récupération de la question posée + affichage de la réponse (via AJAX)
+let form = document.querySelector("#user-question-form");
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+  // Envoyer le contenu du formulaire au serveur
+  let question = document.getElementById('userQuestion').value;
+  const questionUrl = `${API_URL}/question?q=${question}`;
+  fetch(questionUrl)
+  .then(function(response) { 
+    if(response.ok) {
+      response.json()
+      .then(function(data) {
+        const wikiData = data.wiki
+        const mapData = data.map
+        const mapApiKey = data.apiKey
+        const chat = document.getElementById('chat');
+        let wikiUrl = `${WIKI_URL}/${wikiData["wiki_title"]}`;
+        let wikiLink = document.createElement('a');
+        wikiLink.textContent = "[En savoir plus avec Wikipedia]";
+        wikiLink.href = wikiUrl;
+        let talk = [question, wikiData["wiki_extract"]];
+
+        let nodes = talk.map(tk => {
+          let p = document.createElement('p');
+          p.textContent = tk;
+          if (tk == wikiData["wiki_extract"]) {
+            p.className = "chatR";
+            p.appendChild(wikiLink);
+          } else {
+            p.className = "chatQ";
+          }
+
+          return p;
+          });
+
+        chat.append(...nodes);
+        const mapTitle = document.getElementById('mapTitle');
+        mapTitle.innerText = 'Situez "' + wikiData["wiki_title"] + '" sur la carte : '
+
+        displayMap(mapApiKey, wikiData["wiki_coord"])
+      })
+
+    } else {
+      console.log('ça marche pas')
+    }
+  })
+  .catch(error => console.log(error))
 })
 
-/** AFFICHAGE D'UNE CARTE INTERACTIVE 
-*   *********************************
+/*
+ DISPLAY AN INTERACTIVE MAP
+ **************************
 */
+// console.log("HEEEEEEEEEEEEE", coordinates)
 
-// /**
-//  * @param  {H.Map} map      A HERE Map instance within the application
-//  */
- function showMap(map){
-    map.setCenter({lat:appConfig.lat, lng:appConfig.lon});
-    map.setZoom(12);
-  }
-  
-  /**
-   * Boilerplate map initialization code starts below:
-   */
-  
+function initializeMap(apiKey) {
   //Step 1: initialize communication with the platform
-  // In your own code, replace variable window.apikey with your own apikey
-  var platform = new H.service.Platform({
-    // apikey: appConfig.apikey
-    apikey: 'mNn4YZYN9Sh5OpIkdtHyxKprDSSFJjZAe376DxDnUl8'
+  const platform = new H.service.Platform({
+    apikey: apiKey
   });
-  var defaultLayers = platform.createDefaultLayers();
 
-  //Step 2: initialize a map - this map is centered over Europe
-  var map = new H.Map(document.getElementById('mapContainer'),
+  const defaultLayers = platform.createDefaultLayers();
+  let defaultCoordinates = {
+    lat: 54.525961,
+    lng: 15.255119
+  }
+
+  //Step 2: initialize a map - this map is centered over Paris
+  const map = new H.Map(document.getElementById('mapContainer'),
     defaultLayers.raster.normal.map,{
-    center: {lat:50, lng:5},
-    zoom: 15,
+    center: defaultCoordinates,
+    zoom: 13,
     pixelRatio: window.devicePixelRatio || 1
   });
 
-  // Create a marker icon from an image URL:
-  var icon = new H.map.Icon('./static/map-marker.png');
-
-  // Create a marker using the previously instantiated icon:
-  // var marker = new H.map.Marker({ lat: appConfig.lat, lng: appConfig.lon }, { icon: icon });
-
-  // Add the marker to the map:
-  // map.addObject(marker);
-
   // add a resize listener to make sure that the map occupies the whole container
   window.addEventListener('resize', () => map.getViewPort().resize());
-  
+
   //Step 3: make the map interactive
-  // MapEvents enables the event system
-  // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
-  var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+  const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+    // Create the default UI components
+  const ui = H.ui.UI.createDefault(map, defaultLayers);
+
+  return map;
+}
+
+function displayMap(mapApiKey, mapData) {
+  let coordinates = {
+    lat: mapData[0],
+    lng: mapData[1]
+   }
   
-  // Create the default UI components
-  var ui = H.ui.UI.createDefault(map, defaultLayers);
+  const mapContainer = document.getElementById('mapContainer');
+  mapContainer.innerText = ''
+
+  map = initializeMap(mapApiKey)
+  // Create a marker icon from an image URL:
+  const icon = new H.map.Icon('./static/map-marker.png');
+  // Create a marker using the previously instantiated icon:
+  let marker = new H.map.Marker(coordinates, { icon: icon });
   
-  // Now use the map as required...
-  // window.onload = function () {
-  //   showMap(map);
-  //   map.addObject(marker);
-  // }
-
-/** RECHERCHE PAR ADRESSE 
-*   *********************
-*/
-
-// Instantiate a map and platform object:
-// var platform = new H.service.Platform({
-//   'apikey': appConfig.apikey
-// });
-
-// Get an instance of the geocoding service:
-// var service = platform.getSearchService();
-
-// Call the geocode method with the geocoding parameters,
-// the callback and an error callback function (called if a
-// communication error occurs):
-// service.geocode({
-//   q: '200 S Mathilda Ave, Sunnyvale, CA'
-// }, (result) => {
-  // Add a marker for each location found
-//   result.items.forEach((item) => {
-//     map.addObject(new H.map.Marker(item.position));
-//   });
-// }, alert);
+  map.clearContent()
+  map.setCenter(coordinates);
+  map.setZoom(13);
+  // Add the marker to the map:
+  map.addObject(marker);
+ }

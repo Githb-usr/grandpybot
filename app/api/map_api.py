@@ -5,7 +5,7 @@ import os
 import requests
 import time
 from dotenv import dotenv_values
-from config.settings import MAP_URL
+from config.settings import MAP_API_URL
 from app.api.parser import Parser
 
 class MapApi:
@@ -34,7 +34,7 @@ class MapApi:
             "lang": "fr",
             "q": self.parsed_data_string
             }
-        result = requests.get(MAP_URL, params = params)
+        result = requests.get(MAP_API_URL, params = params)
 
         if result.status_code == 200:
             json_data = result.json()
@@ -70,6 +70,6 @@ class MapApi:
         filtered_data_list = self.filter_data_list(raw_data)
 
         if len(filtered_data_list) == 0:  
-            (0, 0)
+            (54.525961, 15.255119)
         else:
             return (filtered_data_list[0]['position']['lat'], filtered_data_list[0]['position']['lng'])

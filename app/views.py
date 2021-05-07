@@ -12,7 +12,7 @@ config = dotenv_values(".env")
 
 @app.route('/')
 def index():
-    return render_template('index_test.html', apikey=config['HERE_JS_API_KEY'])
+    return render_template('index.html')
 
 @app.route('/question', methods=['GET'])
 def getQuestion():
@@ -21,5 +21,10 @@ def getQuestion():
     map_coord = map_object.choose_answer(question)
     wiki_object = WikiApi()
     wiki_data = wiki_object.get_wikipedia_data(map_coord)
-    
-    return jsonify(wiki_data)
+    response = {
+        "map": map_coord,
+        "wiki": wiki_data,
+        "apiKey": config['HERE_JS_API_KEY'],
+    }
+
+    return jsonify(response)

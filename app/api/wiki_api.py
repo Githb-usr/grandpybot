@@ -5,7 +5,7 @@
 import requests
 import time
 from dotenv import dotenv_values
-from config.settings import WIKI_URL
+from config.settings import WIKI_API_URL
 from app.api.map_api import MapApi
 from app.api.parser import Parser
 
@@ -34,7 +34,7 @@ class WikiApi:
                 "gslimit": 1,
                 "utf8":''
             }
-            result = requests.get(WIKI_URL, params = params)
+            result = requests.get(WIKI_API_URL, params = params)
 
             if result.status_code == 200:
                 raw_data = result.json()
@@ -70,15 +70,15 @@ class WikiApi:
             "explaintext": 1,
             "titles": page_title[0]
         }
-        result = requests.get(WIKI_URL, params = params)
-
+        result = requests.get(WIKI_API_URL, params = params)
+        # print(result.url)
         if result.status_code == 200:
             data = result.json()
             wiki_title = list(data['query']['pages'].values())[0]['title']
             wiki_extract = list(data['query']['pages'].values())[0]['extract']
             wiki_coord = (page_title[1][0], page_title[1][1])
 
-            return (wiki_title, wiki_extract, wiki_coord)
+            return {"wiki_title": wiki_title, "wiki_extract": wiki_extract, "wiki_coord": wiki_coord}
         else:
             print("La connexion à l'API de Wikipédia a échoué.")
             print("Nouvelle tentative.")

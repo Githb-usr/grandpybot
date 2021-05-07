@@ -11,32 +11,24 @@
 <main>
     <section id="mainSection">
         <section id="textSection">
-            <h2>Vos questions et les réponses de GrandPy</h2>
+            <h2 id="questionTitle">Vos questions et les réponses de GrandPy</h2>
                 <p id="chat">
-                    {{ wiki_extract }}
                 </p>
         </section>
         <section id="mapSection">
-            <h2>Situez "{{ wiki_title }}" sur une carte : </h2>
+            <h2 id="mapTitle"></h2>
             <div id="mapContainer"></div>
         </section>
     </section>
-    <section id="inputSection">
-        <label for="userQuestion">Posez votre question ici :</label>
+        <section id="inputSection">
         <form id="user-question-form">
-            <div><input type="text" name="userQuestion" id="userQuestion" placeholder="Ma question sur un lieu ou un monument, exemple : que peux-tu me dire à propos de la Tour Eiffel ?" /></div>
-            <div><button type="submit" id="submitButton" onClick="getQuestion()">Envoyer</button></div>
+            <label for="userQuestion">Posez votre question ici :</label>
+            <div><input type="text" name="q" id="userQuestion" placeholder="Ma question sur un lieu ou un monument, exemple : que peux-tu me dire à propos de la Tour Eiffel ?" /></div>
+            <div><button type="submit" id="submitButton" >Envoyer</button></div>
         </form>
     </section>
 </main>
 <footer>
     <!-- Placez ici le contenu du pied de page -->
 </footer>
-<script type="text/javascript">
-    window.appConfig = {
-    apikey: '{{ apikey }}',
-    lat: {{ map_coord[0] }},
-    lon: {{ map_coord[1] }}
-    }
-</script>
 {% endblock main %}
