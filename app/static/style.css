@@ -1,15 +1,22 @@
+body {
+    background-color: #F7F7F7;
+    margin: 0;
+    padding: 20px;
+    width: auto;
+}
+
 main {
     display: flex;
     flex-direction: column;
     border: 0px solid #000;
 }
 
-h2, label {
+h1, h2, label {
     padding-top: 0;
     margin-top: 0;
 }
 
-#mainSection {
+#main-section {
     display: flex;
     flex-direction: row;
     overflow: hidden;
@@ -21,14 +28,14 @@ label {
     font-weight: 700;
 }
 
-#textSection {
+#text-section {
     width: 50%;
     height: 500px;
     border: 1px solid #000;
     padding: 20px;
 }
 
-#questionTitle {
+#question-title {
     padding-bottom: 0;
     margin-bottom: 0;
 }
@@ -40,12 +47,12 @@ label {
     margin-top: 0;
 }
 
-.chatQ {
+.chat-question {
     padding-top: 12px;
     color: red;
 }
 
-#mapSection {
+#map-section {
     width: 50%;
     height: 500px;
     border: 0px solid #000;
@@ -53,7 +60,7 @@ label {
     padding: 20px;
 }
 
-#mapContainer {
+#map-container {
     width: 95%;
     height: 452px;
     overflow: hidden;
@@ -65,7 +72,7 @@ label {
     background: grey;
 }
 
-#inputSection {
+#input-section {
     padding: 20px;
 }
 
@@ -82,3 +89,35 @@ button {
     margin-top: 7px;
     font-weight: 800;
 }
+
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: auto; 
+    padding: 5px 0 0 0;
+    border: 0px solid #000;
+}
+
+#my-name {
+    padding: 0 5px 0 0;
+    border: 0px solid #000;
+}
+
+#github, #copyright {
+    margin: auto; /* Important */ 
+    text-align: center; 
+    padding: 0 7px 0 0;
+    border: 0px solid #000;
+}
+
+#github-logo {
+    width: 7%;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    border: 0px solid #000;
+}
+
+/* Loader */

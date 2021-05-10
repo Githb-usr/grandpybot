@@ -6,8 +6,9 @@ const MAP_URL = "https://geocode.search.hereapi.com/v1/geocode";
 let form = document.querySelector("#user-question-form");
 form.addEventListener("submit", function (event) {
   event.preventDefault();
+
   // Envoyer le contenu du formulaire au serveur
-  let question = document.getElementById('userQuestion').value;
+  let question = document.getElementById('user-question').value;
   const questionUrl = `${API_URL}/question?q=${question}`;
   fetch(questionUrl)
   .then(function(response) { 
@@ -28,17 +29,17 @@ form.addEventListener("submit", function (event) {
           let p = document.createElement('p');
           p.textContent = tk;
           if (tk == wikiData["wiki_extract"]) {
-            p.className = "chatR";
+            p.className = "chat-response";
             p.appendChild(wikiLink);
           } else {
-            p.className = "chatQ";
+            p.className = "chat-question";
           }
 
           return p;
           });
 
         chat.append(...nodes);
-        const mapTitle = document.getElementById('mapTitle');
+        const mapTitle = document.getElementById('map-title');
         mapTitle.innerText = 'Situez "' + wikiData["wiki_title"] + '" sur la carte : '
 
         displayMap(mapApiKey, wikiData["wiki_coord"])
@@ -70,7 +71,7 @@ function initializeMap(apiKey) {
   }
 
   //Step 2: initialize a map - this map is centered over Paris
-  const map = new H.Map(document.getElementById('mapContainer'),
+  const map = new H.Map(document.getElementById('map-container'),
     defaultLayers.raster.normal.map,{
     center: defaultCoordinates,
     zoom: 13,
@@ -94,7 +95,7 @@ function displayMap(mapApiKey, mapData) {
     lng: mapData[1]
    }
   
-  const mapContainer = document.getElementById('mapContainer');
+  const mapContainer = document.getElementById('map-container');
   mapContainer.innerText = ''
 
   map = initializeMap(mapApiKey)
@@ -109,3 +110,5 @@ function displayMap(mapApiKey, mapData) {
   // Add the marker to the map:
   map.addObject(marker);
  }
+
+// Loading spinner

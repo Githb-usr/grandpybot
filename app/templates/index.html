@@ -9,26 +9,35 @@
     <p>Posez-lui des questions sur des lieux ou des monuments, il a plein d'anecdotes à vous raconter ^^</p>
 </header>
 <main>
-    <section id="mainSection">
-        <section id="textSection">
-            <h2 id="questionTitle">Vos questions et les réponses de GrandPy</h2>
+    <section id="main-section">
+        <section id="text-section">
+            <h2 id="question-title">Vos questions et les réponses de GrandPy</h2>
                 <p id="chat">
                 </p>
         </section>
-        <section id="mapSection">
-            <h2 id="mapTitle"></h2>
-            <div id="mapContainer"></div>
+        <section id="map-section">
+            <h2 id="map-title"></h2>
+            <div id="map-container"></div>
         </section>
     </section>
-        <section id="inputSection">
+        <section id="input-section">
         <form id="user-question-form">
-            <label for="userQuestion">Posez votre question ici :</label>
-            <div><input type="text" name="q" id="userQuestion" placeholder="Ma question sur un lieu ou un monument, exemple : que peux-tu me dire à propos de la Tour Eiffel ?" /></div>
-            <div><button type="submit" id="submitButton" >Envoyer</button></div>
+            <label for="user-question">Posez votre question ici :</label>
+            <div><input type="text" name="q" id="user-question" placeholder="Ma question sur un lieu ou un monument, exemple : que peux-tu me dire à propos de la Tour Eiffel ?" /></div>
+            <div><button type="submit" id="submit-button" >Envoyer</button></div>
         </form>
     </section>
 </main>
 <footer>
-    <!-- Placez ici le contenu du pied de page -->
+    <p id="my-name">
+        Nicolas VALLET<br/>
+        Développeur Python
+    </p>
+    <p id="github">Code dispo sur 
+        <a href="https://github.com/Githb-usr/grandpybot" target="blank">
+            <img src="./static/github-logo.png" alt="Logo de Github" id="github-logo" />
+        </a>
+    </p>
+    <p id="copyright">Copyright 2021</p>
 </footer>
 {% endblock main %}
