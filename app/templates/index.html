@@ -14,30 +14,32 @@
 </header>
 <main>
     <section id="intro-section">
-        <h1>Bienvenue chez GrandPy Bot !</h1>
+        <h1>Bienvenue chez GrandPy !</h1>
         <p id="intro1">GrandPy a beaucoup voyagé, en France comme à l'étranger, et il est devenu une vraie encyclopédie !</p>
         <p id="intro2">Posez-lui des questions sur des lieux ou des monuments, il a plein d'anecdotes à vous raconter ^^</p>
     </section>
     <section id="main-section">
         <section id="chat-section">
-            <h2 id="chat-title">Vos questions et les réponses de GrandPy <img src="./static/img/fleche_bas_droite2.png" alt="Flêche vers le bas" class="fleche-bas-droite" /></h2>
-            <div id="chat-area">
-            </div>
+            <h2 id="chat-title">
+                Vos questions et les réponses de GrandPy 
+                <img src="./static/img/fleche_bas_droite.png" alt="Flêche vers le bas" class="fleche-bas-droite" />
+            </h2>
+            <div id="chat-area"></div>
         </section>
         <section id="map-section">
             <h2>
                 <span id="map-title">Une carte apparaitra ici </span>
-                <img src="./static/img/fleche_bas_droite2.png" alt="Flêche vers le bas" class="fleche-bas-droite" />
+                <img src="./static/img/fleche_bas_droite.png" alt="Flêche vers le bas" class="fleche-bas-droite" />
             </h2>
             <div id="map-area"></div>
         </section>
     </section>
-        <section id="input-section">
+    <section id="input-section">
         <form id="user-question-form">
-            <label for="user-question">Posez votre question ici <img src="./static/img/fleche_bas_droite2.png" alt="Flêche vers le bas" class="fleche-bas-droite" /></label>
-            <div>
+            <label for="user-question">Posez votre question ici <img src="./static/img/fleche_bas_droite.png" alt="Flêche vers le bas" class="fleche-bas-droite" /></label>
+            <div id="input-area">
                 <input type="text" name="q" id="user-question" placeholder="Ma question sur un lieu ou un monument, exemple : que peux-tu me dire à propos de la Tour Eiffel ?" />
-                <input type="submit" name="toto" id="submit-button" />
+                <input type="submit" value="OK" id="submit-button" />
             </div>
         </form>
     </section>

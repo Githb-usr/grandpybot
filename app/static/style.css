@@ -1,3 +1,9 @@
+/* Global */
+/* ****** */
+html {
+    height: 100%;
+}
+
 body {
     background-color: #F7F7F7;
     margin: 0;
@@ -5,6 +11,25 @@ body {
     font-family: 'Calibri', 'Trebuchet MS', sans-serif;
 }
 
+h1, h2, h3, label {
+    padding-top: 0;
+    margin: 0 0 10px 0;
+}
+
+label {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.fleche-bas-droite {
+    height: 25px;
+    margin: 0;
+    padding: 0;
+    vertical-align: bottom;
+}
+
+/* Header part */
+/* *********** */
 header {
     display: flex;
     flex-direction: row;
@@ -12,7 +37,7 @@ header {
     width: 100%;
     height: 100%;
     padding: 5px 30px;
-    background-color: cadetblue;
+    background-color: #04BBFF;
 }
 
 #grandpybot-logo {
@@ -43,16 +68,13 @@ header {
     margin: 0;
 }
 
+/* Main part */
+/* ********* */
 main {
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 20px 30px;
-}
-
-h1, h2, h3, label {
-    padding-top: 0;
-    margin: 0 0 10px 0;
 }
 
 #intro1 {
@@ -72,21 +94,9 @@ h1, h2, h3, label {
     margin: 0;
 }
 
-label {
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.fleche-bas-droite {
-    height: 25px;
-    margin: 0;
-    padding: 0;
-    vertical-align: bottom;
-}
-
+/* Chat part */
 #chat-section {
     width: 50%;
-    /* height: 450px; */
     padding-right: 20px;
 }
 
@@ -128,6 +138,7 @@ label {
     border-radius: 15px;
 }
 
+/* Map part */
 #map-section {
     width: 50%;
     /* height: 450px; */
@@ -143,6 +154,7 @@ label {
     border: 1px #000 solid;
 }
 
+/* Input part */
 #input-section {
     width: 100%;
     padding: 0 0 10px 0;
@@ -162,15 +174,17 @@ label {
     font-weight: 800;
 }
 
+/* Footer part */
+/* *********** */
 footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
-    height: 100%;
+    /* height: 100%; */
     margin: auto; 
     padding: 20px 30px;
-    background-color: cadetblue;
+    background-color: #04BBFF;
 }
 
 #my-name {
@@ -194,3 +208,159 @@ footer {
 }
 
 /* Loader */
+
+/* Responsive : laptop */
+/* @media screen and (min-width: 1024px)
+{
+    /* Rédigez vos propriétés CSS ici */
+/* } */
+
+/* Responsive : tablets */
+@media screen and (min-width: 768px) and (max-width: 1023px)
+{
+    /* Rédigez vos propriétés CSS ici */
+}
+
+/* Responsive : vertical smartphones */
+@media screen and (max-width: 767px)
+{
+    /* Global */
+    /* ****** */
+    h1 {
+        font-size: 150%;
+    }
+
+    h2, label {
+        font-size: 135%;
+    }
+
+    h3 {
+        font-size: 120%;
+    }
+
+    label {
+        font-weight: 700;
+    }
+
+    .fleche-bas-droite {
+        height: 20px;
+    }
+    
+    /* Header part */
+    /* *********** */
+    header {
+        padding: 0 12px;
+    }
+    
+    #grandpybot-logo {
+        height: 75px;
+        padding-right: 12px;
+    }
+    
+    #main-title {
+        font-size: 260%;
+    }
+    
+    #sub-title {
+        font-size: 136%;
+    }
+    
+    /* Main part */
+    /* ********* */
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px 12px;
+    }
+    
+    /* Intro part */
+    #intro-section {
+        order: 1;
+    }
+    
+    #main-section {
+        order: 3;
+        flex-direction: column;
+        overflow: visible;
+        padding: 10px 0 0 0;
+    }
+    
+    /* Chat part */
+    #chat-section {
+        width: 100%;
+        /* height: 100%; */
+        margin-bottom: 15px;
+        padding-right: 0;
+    }
+    
+    #chat-title {
+        margin-bottom: 8px;
+    }
+    
+    #chat-area {
+        height: 350px;
+    }
+    
+    .chat-response {
+        margin: 5px 10px 15px 10px;
+    }
+    
+    /* Map part */
+    #map-section {
+        width: 100%;
+        /* height: 100%; */
+        overflow: visible;
+        padding-left: 0;
+    }
+    
+    #map-area {
+        height: 350px;
+        overflow: visible;
+    }
+
+    /* Input part */
+    #input-section {
+        order: 2;
+    }
+
+    #input-area {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    #user-question {
+        width: 82%;
+        margin: 8px 5px 0 0;
+    }
+    
+    #submit-button {
+        width: 12%;
+        padding: 9px;
+        margin-top: 8px;
+        font-size: 115%;
+        font-weight: 800;
+    }
+    
+    /* Footer part */
+    /* *********** */
+    footer {
+        padding: 10px 0 10px 15px;
+    }
+    
+    #my-name {
+        width: 50%;
+    }
+    
+    #github, #copyright {
+        height: 100%;
+        margin: 0 auto; /* Important */ 
+        text-align: center; 
+        padding: 0 7px 0 0;
+    }
+    
+    #github-logo {
+        width: 15%;
+    }
+}
