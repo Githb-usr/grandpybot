@@ -1,0 +1,7 @@
+.coverage
+.env
+.vscode
+__pycache__
+get-pip.py
+htmlcov
+src/__pycache__

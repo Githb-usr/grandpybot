@@ -1,0 +1,23 @@
+<!-- grandpybot/templates/template.html -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+        <title>GrandPy Bot</title>
+        <link rel="stylesheet" href="/static/style.css">
+        <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+        <script>window.ENV_VARIABLE = 'developer.here.com'</script>
+    </head>
+    <body>
+        {% block main %}
+
+        {% endblock main %}
+        <script src="/static/script.js" type="text/javascript" charset="utf-8"></script>
+    </body>
+</html>
