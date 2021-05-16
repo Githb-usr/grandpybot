@@ -3,32 +3,56 @@
 {% extends 'template.html' %}
 {% block main %}
 <header>
-    <!-- Placez ici le contenu de l'en-tête de votre page -->
-    <h1>Bienvenue chez GrandPy Bot !</h1>
-    <p>GrandPy a beaucoup voyagé, en France comme à l'étranger, et il est devenu une vraie encyclopédie !</p>
-    <p>Posez-lui des questions sur des lieux ou des monuments, il a plein d'anecdotes à vous raconter ^^</p>
+    <p id="header-logo">
+        <img src="./static/img/grandpybot.png" alt="Logo GrandPy Bot" id="grandpybot-logo" />
+    </p>
+    <div id="header-text">
+        <p id="main-title">GRANDPY BOT</p>
+        <p id="sub-title">Il a réponse à (presque) tout</p>
+    </div>
 </header>
 <main>
-    <section id="mainSection">
-        <section id="textSection">
-            <h2 id="questionTitle">Vos questions et les réponses de GrandPy</h2>
-                <p id="chat">
-                </p>
+    <section id="intro-section">
+        <h1>Bienvenue chez GrandPy !</h1>
+        <p id="intro1">GrandPy a beaucoup voyagé, en France comme à l'étranger, et il est devenu une vraie encyclopédie !</p>
+        <p id="intro2">Posez-lui des questions sur des lieux ou des monuments, il a plein d'anecdotes à vous raconter ^^</p>
+    </section>
+    <section id="main-section">
+        <section id="chat-section">
+            <h2 id="chat-title">
+                Vos questions et les réponses de GrandPy 
+                <img src="./static/img/fleche_bas_droite.png" alt="Flêche vers le bas" class="fleche-bas-droite" />
+            </h2>
+            <div id="chat-area"></div>
         </section>
-        <section id="mapSection">
-            <h2 id="mapTitle"></h2>
-            <div id="mapContainer"></div>
+        <section id="map-section">
+            <h2>
+                <span id="map-title">Une carte apparaitra ici </span>
+                <img src="./static/img/fleche_bas_droite.png" alt="Flêche vers le bas" class="fleche-bas-droite" />
+            </h2>
+            <div id="map-area"></div>
         </section>
     </section>
-        <section id="inputSection">
+    <section id="input-section">
         <form id="user-question-form">
-            <label for="userQuestion">Posez votre question ici :</label>
-            <div><input type="text" name="q" id="userQuestion" placeholder="Ma question sur un lieu ou un monument, exemple : que peux-tu me dire à propos de la Tour Eiffel ?" /></div>
-            <div><button type="submit" id="submitButton" >Envoyer</button></div>
+            <label for="user-question">Posez votre question ici <img src="./static/img/fleche_bas_droite.png" alt="Flêche vers le bas" class="fleche-bas-droite" /></label>
+            <div id="input-area">
+                <input type="text" name="q" id="user-question" placeholder="Ma question sur un lieu ou un monument, exemple : que peux-tu me dire à propos de la Tour Eiffel ?" />
+                <input type="submit" value="OK" id="submit-button" />
+            </div>
         </form>
     </section>
 </main>
 <footer>
-    <!-- Placez ici le contenu du pied de page -->
+    <div id="my-name">
+        Nicolas VALLET<br/>
+        Développeur Python
+    </div>
+    <div id="github">Code sur 
+        <a href="https://github.com/Githb-usr/grandpybot" target="blank">
+            <img src="./static/img/github-logo.png" alt="Logo de Github" id="github-logo" />
+        </a>
+    </div>
+    <div id="copyright">Copyright 2021</div>
 </footer>
 {% endblock main %}

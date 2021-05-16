@@ -1,19 +1,21 @@
-main {
-    display: flex;
-    flex-direction: column;
-    border: 0px solid #000;
+/* Global */
+/* ****** */
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; 
 }
 
-h2, label {
+body {
+    background-color: #F7F7F7;
+    font-family: 'Calibri', 'Trebuchet MS', sans-serif;
+}
+
+h1, h2, h3, label {
     padding-top: 0;
-    margin-top: 0;
-}
-
-#mainSection {
-    display: flex;
-    flex-direction: row;
-    overflow: hidden;
-    border: 0px solid #000;
+    margin: 0 0 10px 0;
 }
 
 label {
@@ -21,64 +23,491 @@ label {
     font-weight: 700;
 }
 
-#textSection {
-    width: 50%;
-    height: 500px;
-    border: 1px solid #000;
-    padding: 20px;
+.fleche-bas-droite {
+    height: 25px;
+    margin: 0;
+    padding: 0;
+    vertical-align: bottom;
 }
 
-#questionTitle {
-    padding-bottom: 0;
-    margin-bottom: 0;
+/* Header part */
+/* *********** */
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 5px 0 5px 30px;
+    background-color: #04BBFF;
 }
 
-#chat {
-    height: 90%;
-    overflow: auto;
-    padding-top: 0;
+#grandpybot-logo {
+    height: 90px;
+    vertical-align: middle;
+    margin: 0;
+    padding-right: 25px;
+}
+
+#header-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#main-title {
+    font-size: 350%;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#sub-title {
+    font-size: 180%;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+/* Main part */
+/* ********* */
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 20px 30px;
+}
+
+#intro1 {
+    margin: 0 0 5px 0;
+}
+
+#intro2 {
     margin-top: 0;
 }
 
-.chatQ {
-    padding-top: 12px;
-    color: red;
+#main-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* overflow: hidden; */
+    margin: 0;
+    padding: 15px 0 0 0;
 }
 
-#mapSection {
-    width: 50%;
-    height: 500px;
-    border: 0px solid #000;
-    overflow: hidden;
-    padding: 20px;
+#chat-section, #map-section {
+    flex: 50%;
+    max-width: 50%;
+    margin-bottom: 15px;
 }
 
-#mapContainer {
-    width: 95%;
-    height: 452px;
-    overflow: hidden;
+/* Chat part */
+#chat-section {
+    margin-right: 10px;
 }
 
-#map {
-    width: 95%;
-    height: 450px;
-    background: grey;
+#chat-title {
+    padding-bottom: 0;
+    margin-bottom: 10px;
+    vertical-align: middle;
 }
 
-#inputSection {
-    padding: 20px;
+#chat-area {
+    display: flex;
+    flex-direction: column;
+    height: 430px;
+    overflow: auto;
+    scrollbar-width: none;
+    padding: 0;
+    margin: 0;
+    background-color: #FFF;
+    font-size:large;
+    border: 1px #000 solid;
 }
 
-input {
-    width: 48%;
+.chat-question {
+    position: relative;
+    width: 75%;
+    margin: 10px;
+    padding: 10px;
+    background-color:#77CEF3;
+    border-radius: 15px;
+}
+
+.chat-response {
+    position: relative;
+    align-self: flex-end;
+    width: 75%;
+    margin: 10px 10px 25px 10px;
+    padding: 10px;
+    background-color:#EDF26C;
+    border-radius: 15px;
+}
+
+/* Map part */
+#map-section {
+    margin-left: 10px;
+}
+
+#map-area {
+    height: 430px;
+    background-color: #FFF;
+    border: 1px #000 solid;
+}
+
+/* Input part */
+#input-section {
+    width: 100%;
+    padding: 0 0 10px 0;
+}
+
+#user-question {
+    width: 43%;
     height: 30px;
     padding: 7px;
-    margin-top: 17px;
+    margin: 12px 10px 0 0;
 }
 
-button {
-    width: 120px;
-    height: 30px;
-    margin-top: 7px;
+#submit-button {
+    width: 5%;
+    height: 100%;
+    padding: 12px;
     font-weight: 800;
+}
+
+/* Footer part */
+/* *********** */
+footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0; 
+    padding: 20px 30px;
+    background-color: #04BBFF;
+}
+
+#my-name, #github, #copyright {
+    flex: 30%;
+    max-width: 50%;
+    height: 100%;
+}
+
+#my-name {
+    margin: 0;
+    padding: 0 5px 0 0;
+}
+
+#github, #copyright {
+    text-align: center; 
+    padding: 0 7px 0 0;
+}
+
+#github-logo {
+    width: 7%;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+}
+
+/* Loader */
+
+/* ******************** */
+/* Responsive : tablets */
+/* ******************** */
+@media screen and (min-width: 768px) and (max-width: 1023px)
+{
+    /* Global */
+    /* ****** */
+    h1 {
+        font-size: 150%;
+    }
+
+    h2, label {
+        font-size: 135%;
+    }
+
+    h3 {
+        font-size: 120%;
+    }
+
+    label {
+        font-weight: 700;
+    }
+
+    .fleche-bas-droite {
+        height: 20px;
+    }
+    
+    /* Header part */
+    /* *********** */
+    header {
+        padding: 0 0 0 12px;
+    }
+    
+    #grandpybot-logo {
+        height: 75px;
+        padding-right: 12px;
+    }
+    
+    #main-title {
+        font-size: 260%;
+    }
+    
+    #sub-title {
+        font-size: 136%;
+    }
+    
+    /* Main part */
+    /* ********* */
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0;
+        padding: 10px;
+    }
+    
+    /* Intro part */
+    #intro-section {
+        order: 1;
+    }
+    
+    #main-section {
+        order: 3;
+        flex-direction: column;
+        justify-content: center;
+        overflow: visible;
+        margin: 0;
+        padding: 10px 0 0 0;
+    }
+
+    #chat-section, #map-section {
+        flex: 100%;
+        max-width: 100%;
+        margin-bottom: 10px;
+        padding: 0;
+    }
+    
+    /* Chat part */
+    #chat-section {
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #chat-title {
+        margin-bottom: 8px;
+    }
+    
+    #chat-area {
+        height: 350px;
+    }
+    
+    .chat-response {
+        margin: 5px 10px 15px 10px;
+    }
+    
+    /* Map part */
+    #map-section {
+        margin-top: 5px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #map-area {
+        height: 350px;
+        margin-top: 10px;
+    }
+
+    /* Input part */
+    #input-section {
+        order: 2;
+    }
+
+    #input-area {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    #user-question {
+        width: 90%;
+        margin: 8px 5px 0 0;
+    }
+    
+    #submit-button {
+        width: 8%;
+        padding: 9px;
+        margin-top: 8px;
+        font-size: 115%;
+        font-weight: 800;
+    }
+    
+    /* Footer part */
+    /* *********** */
+    footer {
+        padding: 10px 15px 10px 15px;
+    }
+    
+    #github, #copyright {
+        height: 100%;
+        padding: 0 7px 0 0;
+    }
+
+    #github {
+        text-align:center;
+    }
+    
+    #copyright {
+        text-align:right;
+    }
+    
+    #github-logo {
+        width: 25%;
+    }
+}
+
+/* ********************************* */
+/* Responsive : vertical smartphones */
+/* ********************************* */
+@media screen and (max-width: 767px)
+{
+    /* Global */
+    /* ****** */
+    h1 {
+        font-size: 150%;
+    }
+
+    h2, label {
+        font-size: 135%;
+    }
+
+    h3 {
+        font-size: 120%;
+    }
+
+    label {
+        font-weight: 700;
+    }
+
+    .fleche-bas-droite {
+        height: 20px;
+    }
+    
+    /* Header part */
+    /* *********** */
+    header {
+        padding: 0 12px;
+    }
+    
+    #grandpybot-logo {
+        height: 75px;
+        padding-right: 12px;
+    }
+    
+    #main-title {
+        font-size: 260%;
+    }
+    
+    #sub-title {
+        font-size: 136%;
+    }
+    
+    /* Main part */
+    /* ********* */
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px 12px;
+    }
+    
+    /* Intro part */
+    #intro-section {
+        order: 1;
+    }
+    
+    #main-section {
+        order: 3;
+        flex-direction: column;
+        overflow: visible;
+        padding: 10px 0 0 0;
+    }
+
+    #chat-section, #map-section {
+        flex: 100%;
+        max-width: 100%;
+        margin: 0 0 10px 0;
+        padding: 0;
+    }
+    
+    /* Chat part */
+    #chat-section {
+        margin-bottom: 15px;
+    }
+    
+    #chat-title {
+        margin-bottom: 8px;
+    }
+    
+    #chat-area {
+        height: 350px;
+    }
+    
+    .chat-response {
+        margin: 5px 10px 15px 10px;
+    }
+    
+    /* Map part */
+    #map-section {
+        margin-top: 5px;
+    }
+    
+    #map-area {
+        height: 350px;
+        overflow: visible;
+    }
+
+    /* Input part */
+    #input-section {
+        order: 2;
+    }
+
+    #input-area {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    #user-question {
+        width: 82%;
+        margin: 8px 5px 0 0;
+    }
+    
+    #submit-button {
+        width: 12%;
+        padding: 9px;
+        margin-top: 8px;
+        font-size: 115%;
+        font-weight: 800;
+    }
+    
+    /* Footer part */
+    /* *********** */
+    footer {
+        padding: 10px 0 10px 15px;
+    }
+    
+    #github, #copyright {
+        height: 100%;
+        margin: 0 auto; /* Important */ 
+        text-align: center; 
+        padding: 0 7px 0 0;
+    }
+    
+    #github-logo {
+        width: 25%;
+    }
 }
