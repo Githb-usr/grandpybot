@@ -87,12 +87,12 @@ function initializeMap(apiKey) {
     pixelRatio: window.devicePixelRatio || 1
   });
 
-  // add a resize listener to make sure that the map occupies the whole container
+  // Add a resize listener to make sure that the map occupies the whole container
   window.addEventListener('resize', () => map.getViewPort().resize());
 
   //Step 3: make the map interactive
   const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
-    // Create the default UI components
+  // Create the default UI components
   const ui = H.ui.UI.createDefault(map, defaultLayers);
 
   return map;

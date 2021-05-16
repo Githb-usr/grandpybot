@@ -1,13 +1,15 @@
 /* Global */
 /* ****** */
-html {
+html, body {
+    width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; 
 }
 
 body {
     background-color: #F7F7F7;
-    margin: 0;
-    width: auto;
     font-family: 'Calibri', 'Trebuchet MS', sans-serif;
 }
 
@@ -35,8 +37,8 @@ header {
     flex-direction: row;
     align-items: center;
     width: 100%;
-    height: 100%;
-    padding: 5px 30px;
+    margin: 0;
+    padding: 5px 0 5px 30px;
     background-color: #04BBFF;
 }
 
@@ -74,6 +76,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    margin: 0;
     padding: 20px 30px;
 }
 
@@ -88,16 +91,21 @@ main {
 #main-section {
     display: flex;
     flex-direction: row;
-    overflow: hidden;
-    height: 490px;
-    padding: 20px 0 0 0;
+    justify-content: space-between;
+    /* overflow: hidden; */
     margin: 0;
+    padding: 15px 0 0 0;
+}
+
+#chat-section, #map-section {
+    flex: 50%;
+    max-width: 50%;
+    margin-bottom: 15px;
 }
 
 /* Chat part */
 #chat-section {
-    width: 50%;
-    padding-right: 20px;
+    margin-right: 10px;
 }
 
 #chat-title {
@@ -140,16 +148,11 @@ main {
 
 /* Map part */
 #map-section {
-    width: 50%;
-    /* height: 450px; */
-    overflow: hidden;
-    padding-left: 20px;
+    margin-left: 10px;
 }
 
 #map-area {
-    width: 98%;
     height: 430px;
-    overflow: hidden;
     background-color: #FFF;
     border: 1px #000 solid;
 }
@@ -161,7 +164,7 @@ main {
 }
 
 #user-question {
-    width: 42%;
+    width: 43%;
     height: 30px;
     padding: 7px;
     margin: 12px 10px 0 0;
@@ -179,23 +182,24 @@ main {
 footer {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    /* height: 100%; */
-    margin: auto; 
+    justify-content: center;
+    margin: 0; 
     padding: 20px 30px;
     background-color: #04BBFF;
 }
 
-#my-name {
+#my-name, #github, #copyright {
+    flex: 30%;
+    max-width: 50%;
     height: 100%;
+}
+
+#my-name {
     margin: 0;
     padding: 0 5px 0 0;
 }
 
 #github, #copyright {
-    height: 100%;
-    margin: 0 auto; /* Important */ 
     text-align: center; 
     padding: 0 7px 0 0;
 }
@@ -209,19 +213,165 @@ footer {
 
 /* Loader */
 
-/* Responsive : laptop */
-/* @media screen and (min-width: 1024px)
-{
-    /* Rédigez vos propriétés CSS ici */
-/* } */
-
+/* ******************** */
 /* Responsive : tablets */
+/* ******************** */
 @media screen and (min-width: 768px) and (max-width: 1023px)
 {
-    /* Rédigez vos propriétés CSS ici */
+    /* Global */
+    /* ****** */
+    h1 {
+        font-size: 150%;
+    }
+
+    h2, label {
+        font-size: 135%;
+    }
+
+    h3 {
+        font-size: 120%;
+    }
+
+    label {
+        font-weight: 700;
+    }
+
+    .fleche-bas-droite {
+        height: 20px;
+    }
+    
+    /* Header part */
+    /* *********** */
+    header {
+        padding: 0 0 0 12px;
+    }
+    
+    #grandpybot-logo {
+        height: 75px;
+        padding-right: 12px;
+    }
+    
+    #main-title {
+        font-size: 260%;
+    }
+    
+    #sub-title {
+        font-size: 136%;
+    }
+    
+    /* Main part */
+    /* ********* */
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0;
+        padding: 10px;
+    }
+    
+    /* Intro part */
+    #intro-section {
+        order: 1;
+    }
+    
+    #main-section {
+        order: 3;
+        flex-direction: column;
+        justify-content: center;
+        overflow: visible;
+        margin: 0;
+        padding: 10px 0 0 0;
+    }
+
+    #chat-section, #map-section {
+        flex: 100%;
+        max-width: 100%;
+        margin-bottom: 10px;
+        padding: 0;
+    }
+    
+    /* Chat part */
+    #chat-section {
+        margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #chat-title {
+        margin-bottom: 8px;
+    }
+    
+    #chat-area {
+        height: 350px;
+    }
+    
+    .chat-response {
+        margin: 5px 10px 15px 10px;
+    }
+    
+    /* Map part */
+    #map-section {
+        margin-top: 5px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #map-area {
+        height: 350px;
+        margin-top: 10px;
+    }
+
+    /* Input part */
+    #input-section {
+        order: 2;
+    }
+
+    #input-area {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    #user-question {
+        width: 90%;
+        margin: 8px 5px 0 0;
+    }
+    
+    #submit-button {
+        width: 8%;
+        padding: 9px;
+        margin-top: 8px;
+        font-size: 115%;
+        font-weight: 800;
+    }
+    
+    /* Footer part */
+    /* *********** */
+    footer {
+        padding: 10px 15px 10px 15px;
+    }
+    
+    #github, #copyright {
+        height: 100%;
+        padding: 0 7px 0 0;
+    }
+
+    #github {
+        text-align:center;
+    }
+    
+    #copyright {
+        text-align:right;
+    }
+    
+    #github-logo {
+        width: 25%;
+    }
 }
 
+/* ********************************* */
 /* Responsive : vertical smartphones */
+/* ********************************* */
 @media screen and (max-width: 767px)
 {
     /* Global */
@@ -285,13 +435,17 @@ footer {
         overflow: visible;
         padding: 10px 0 0 0;
     }
+
+    #chat-section, #map-section {
+        flex: 100%;
+        max-width: 100%;
+        margin: 0 0 10px 0;
+        padding: 0;
+    }
     
     /* Chat part */
     #chat-section {
-        width: 100%;
-        /* height: 100%; */
         margin-bottom: 15px;
-        padding-right: 0;
     }
     
     #chat-title {
@@ -308,10 +462,7 @@ footer {
     
     /* Map part */
     #map-section {
-        width: 100%;
-        /* height: 100%; */
-        overflow: visible;
-        padding-left: 0;
+        margin-top: 5px;
     }
     
     #map-area {
@@ -349,10 +500,6 @@ footer {
         padding: 10px 0 10px 15px;
     }
     
-    #my-name {
-        width: 50%;
-    }
-    
     #github, #copyright {
         height: 100%;
         margin: 0 auto; /* Important */ 
@@ -361,6 +508,6 @@ footer {
     }
     
     #github-logo {
-        width: 15%;
+        width: 25%;
     }
 }

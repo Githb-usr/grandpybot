@@ -3,7 +3,6 @@
 {% extends 'template.html' %}
 {% block main %}
 <header>
-    <!-- Placez ici le contenu de l'en-tête de votre page -->
     <p id="header-logo">
         <img src="./static/img/grandpybot.png" alt="Logo GrandPy Bot" id="grandpybot-logo" />
     </p>
@@ -45,15 +44,15 @@
     </section>
 </main>
 <footer>
-    <p id="my-name">
+    <div id="my-name">
         Nicolas VALLET<br/>
         Développeur Python
-    </p>
-    <p id="github">Code sur 
+    </div>
+    <div id="github">Code sur 
         <a href="https://github.com/Githb-usr/grandpybot" target="blank">
             <img src="./static/img/github-logo.png" alt="Logo de Github" id="github-logo" />
         </a>
-    </p>
-    <p id="copyright">Copyright 2021</p>
+    </div>
+    <div id="copyright">Copyright 2021</div>
 </footer>
 {% endblock main %}
