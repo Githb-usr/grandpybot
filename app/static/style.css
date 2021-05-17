@@ -38,7 +38,7 @@ header {
     align-items: center;
     width: 100%;
     margin: 0;
-    padding: 5px 0 5px 30px;
+    padding: 0 0 0 30px;
     background-color: #04BBFF;
 }
 
@@ -80,12 +80,8 @@ main {
     padding: 20px 30px;
 }
 
-#intro1 {
-    margin: 0 0 5px 0;
-}
-
-#intro2 {
-    margin-top: 0;
+#intro {
+    margin: 0 0 15px 0;
 }
 
 #main-section {
@@ -94,7 +90,7 @@ main {
     justify-content: space-between;
     /* overflow: hidden; */
     margin: 0;
-    padding: 15px 0 0 0;
+    padding: 5px 0 0 0;
 }
 
 #chat-section, #map-section {
@@ -158,57 +154,72 @@ main {
 }
 
 /* Input part */
-#input-section {
+form {
     width: 100%;
     padding: 0 0 10px 0;
 }
 
 #user-question {
-    width: 43%;
+    width: 44%;
     height: 30px;
     padding: 7px;
-    margin: 12px 10px 0 0;
+    margin: 12px 8px 0 0;
 }
 
 #submit-button {
-    width: 5%;
+    width: 4%;
     height: 100%;
-    padding: 12px;
+    margin-top: 10px;
+    padding: 9px;
+    font-size: 115%;
     font-weight: 800;
 }
 
 /* Footer part */
 /* *********** */
 footer {
+    width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     margin: 0; 
     padding: 20px 30px;
-    background-color: #04BBFF;
+    background: #04BBFF none repeat scroll 0% 0%;
+    font-weight: bold;
 }
 
-#my-name, #github, #copyright {
-    flex: 30%;
-    max-width: 50%;
+#footer-top-bloc {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 10px;
+}
+
+#developer, #github {
+    flex: 15%;
+    max-width: 15%;
     height: 100%;
 }
 
-#my-name {
+#developer {
     margin: 0;
     padding: 0 5px 0 0;
 }
 
-#github, #copyright {
+#github {
     text-align: center; 
     padding: 0 7px 0 0;
 }
 
 #github-logo {
-    width: 7%;
+    width: 25%;
     vertical-align: middle;
     margin: 0;
-    padding: 0;
+    padding: 0 0 0 4px;
+}
+
+#footer-bottom-bloc {
+    padding: 0 7px 0 0;
+    text-align: center; 
 }
 
 /* Loader */
@@ -351,7 +362,7 @@ footer {
         padding: 10px 15px 10px 15px;
     }
     
-    #github, #copyright {
+    #github, #footer-bottom-bloc {
         height: 100%;
         padding: 0 7px 0 0;
     }
@@ -360,7 +371,7 @@ footer {
         text-align:center;
     }
     
-    #copyright {
+    #footer-bottom-bloc {
         text-align:right;
     }
     
@@ -381,11 +392,7 @@ footer {
     }
 
     h2, label {
-        font-size: 135%;
-    }
-
-    h3 {
-        font-size: 120%;
+        font-size: 125%;
     }
 
     label {
@@ -500,14 +507,14 @@ footer {
         padding: 10px 0 10px 15px;
     }
     
-    #github, #copyright {
+    #developer, #github {
+        flex: 50%;
+        max-width: 50%;
         height: 100%;
-        margin: 0 auto; /* Important */ 
-        text-align: center; 
         padding: 0 7px 0 0;
     }
     
     #github-logo {
-        width: 25%;
+        width: 32%;
     }
 }
