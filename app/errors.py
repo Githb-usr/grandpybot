@@ -1,32 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-class WikiBadRequestError(Exception):
-    """
-        xxx
-    """
-    
 class HereBadRequestError(Exception):
     """
-        xxx
-    """
-
-class WikiJsonError(Exception):
-    """
-        xxx
-    """
-
-class WikiNetworkError(Exception):
-    """
-        xxx
-    """
-
-class HereNetworkError(Exception):
-    """
-        xxx
+        To capture request errors when connecting to the Here.com API
     """
 
 class HereJsonError(Exception):
     """
-        xxx
+        To catch errors due to empty or incomplete JSON from the Here.com API
+    """
+
+class HereNetworkError(Exception):
+    """
+        To capture network errors from the Here.com API
+    """
+
+class WikiBadRequestError(Exception):
+    """
+        To capture request errors when connecting to the Wikipedia API
+    """
+
+class WikiJsonError(Exception):
+    """
+        To catch errors due to empty or incomplete JSON from the Wikipedia API
+    """
+
+class WikiNetworkError(Exception):
+    """
+        To capture network errors from Wikipedia API
     """
