@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import random
+
 from dotenv import dotenv_values
 from flask import Flask, request, redirect, url_for, render_template, jsonify
+
 from . import app
+from app.errors import HereNetworkError, HereBadRequestError, HereJsonError, WikiNetworkError, WikiBadRequestError, WikiJsonError
 from app.api.map_api import MapApi
 from app.api.wiki_api import WikiApi
 from config.settings import DEFAULT_COORDINATES, DEFAULT_TITLE, DEFAULT_EXTRACT, POSITIVE_GRANDPY_MESSAGES, NEGATIVE_GRANDPY_MESSAGES, DEFAULT_RESPONSE
-import random
-from app.errors import HereNetworkError, HereBadRequestError, HereJsonError, WikiNetworkError, WikiBadRequestError, WikiJsonError
 
 config = dotenv_values(".env")
 
@@ -52,7 +54,7 @@ def getQuestion():
                 "positive_messages": POSITIVE_GRANDPY_MESSAGES,
                 "negative_messages": NEGATIVE_GRANDPY_MESSAGES
             }
-            print("second", response["wiki"])
+
             return jsonify(response)
     else:
         response = {
@@ -64,5 +66,5 @@ def getQuestion():
             "positive_messages": POSITIVE_GRANDPY_MESSAGES,
             "negative_messages": NEGATIVE_GRANDPY_MESSAGES
         }
-        print("first", response["wiki"])
+
         return jsonify(response)

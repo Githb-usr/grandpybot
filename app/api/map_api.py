@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests
-import time
 from dotenv import dotenv_values
-from config.settings import MAP_API_URL, DEFAULT_COORDINATES
-from app.api.parser import Parser
+import requests
+
 from app.errors import HereNetworkError, HereJsonError, HereBadRequestError
+from app.api.parser import Parser
+from config.settings import MAP_API_URL
 
 class MapApi:
     """
@@ -19,13 +19,13 @@ class MapApi:
         self.parser = Parser()
         self.cleaned_question = ''
         self.cleaned_question_words_list = []
-        self.no_data = "no data"
 
     def get_raw_map_data(self, cleaned_question):
         """
             We get the information about the place searched by the user from
             the API.
-            :param: raw_string is a string (the user question)
+            :param: cleaned_question is a string (the user question) after
+            cleaning
             :return: locations returned by the API
             :rtype: JSON
         """
@@ -62,10 +62,12 @@ class MapApi:
     def get_filtered_map_data_list(self, raw_map_data):
         """
             The API responses are filtered to reduce the number of responses
-            and keep only the most relevant ones
-            :param: raw_map_data is xxx
-            :return: locations returned by the API but filtered
-            :rtype: dictionary list
+            and keep only the most relevant ones.
+            We choose the first answer among those remaining after filtering
+            :param: raw_map_data is a JSON with the information about the place
+            searched by the user from the API.
+            :return: coordinates (latitude and longitude) of the place
+            :rtype: tuple
         """
         # Creation of a dictionary containing data from JSON data
         map_data_dict_list = []
@@ -85,41 +87,25 @@ class MapApi:
             if set(self.cleaned_question_words_list) <= set(parsed_label.split(' ')):
                 filtered_map_data_list.append(item)
 
-        return filtered_map_data_list
-
-    def choose_final_map_data(self, filtered_map_data_list):
-        """
-            We choose an answer among those remaining after filtering
-            :param: filtered_map_data_list is xxx
-            :return: coordinates (latitude and longitude) of the place
-            :rtype: tuple
-        """
-        # If the list is empty, default coordinates are returned (a point in
-        # the Baltic Sea, in Europe)
-        if len(filtered_map_data_list) == 0:
-            return DEFAULT_COORDINATES
-        # otherwise we return the coordinates of the first place in the list
-        else:
-            return (
-                filtered_map_data_list[0]['position']['lat'],
-                filtered_map_data_list[0]['position']['lng']
-                )
+        # We return the coordinates of the first place in the list
+        return (
+            filtered_map_data_list[0]['position']['lat'],
+            filtered_map_data_list[0]['position']['lng']
+            )
 
     def get_cleaned_map_data(self, raw_string):
         """
-            We xxx
-            :param: raw_string is a string (the user question)
-            :return: xxx
-            :rtype: xxx
+            We retrieve the coordinates of the user's location
+            :param: raw_string is a string (the raw user question)
+            :return: coordinates (latitude and longitude) of the location
+            :rtype: tuple
         """
         # We retrieve the parsed data from the user's question.
         self.cleaned_question = self.parser.get_cleaned_string(raw_string)
         # We store the parsed list of words, for later use
         self.cleaned_question_words_list = self.parser.cleaned_string_words_list
-
+        # We get all API response
         raw_map_data = self.get_raw_map_data(self.cleaned_question)
-        print(raw_map_data)
-        filtered_map_data_list = self.get_filtered_map_data_list(raw_map_data)
-        print(filtered_map_data_list)
-        
-        return self.choose_final_map_data(filtered_map_data_list)
+
+        # We return the first response after filtering
+        return self.get_filtered_map_data_list(raw_map_data)

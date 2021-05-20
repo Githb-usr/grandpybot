@@ -1,29 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests
-import time
 from dotenv import dotenv_values
-from config.settings import WIKI_API_URL, DEFAULT_COORDINATES
-from app.api.parser import Parser
+import requests
+
 from app.errors import WikiNetworkError, WikiJsonError, WikiBadRequestError
+from app.api.parser import Parser
+from config.settings import WIKI_API_URL
 
 class WikiApi:
     """
-        WikiMapWikiApi class
+        WikiApi class
         To manage the Wikipedia API data recovery after use Here API
     """
 
     def __init__(self):
         """ Constructor """
         self.parser = Parser()
-        self.no_data = "no data"
-        
+
     def get_wiki_page_title(self, cleaned_question):
         """
-            We xxx
-            :return: xxx
-            :rtype: xxx
+            We get the title of the Wikipedia page from the API
+            :return: the wiki page title (not parsed string)
+            :rtype: string
         """
         # We define the parameters of the request
         params = {
@@ -34,8 +33,6 @@ class WikiApi:
         }
         try:
             result = requests.get(WIKI_API_URL, params = params)
-            print("tototototot")
-            print(result.url)
         except:
             print("The connection to the Wikipedia API (for page title) has failed.")
             raise WikiNetworkError()
@@ -53,12 +50,12 @@ class WikiApi:
                 except:
                     print("The JSON does not contain the page title.")
                     raise WikiJsonError()
-    
+
     def get_wiki_coordinates(self, wiki_page_title):
         """
-            We xxx
-            :return: xxx
-            :rtype: xxx
+            We get the place's wiki coordinates from the API
+            :return: coordinates (latitude and longitude) of the location
+            :rtype: tuple
         """
         # We define the parameters of the request
         params = {
@@ -70,9 +67,6 @@ class WikiApi:
         }
         try:
             result = requests.get(WIKI_API_URL, params = params)
-            print("poule poule poule")
-            print(result.url)
-            print(result.status_code)
         except:
             print("The connection to the Wikipedia API (for coordinates) has failed.")
             raise WikiNetworkError()
@@ -96,10 +90,10 @@ class WikiApi:
 
     def get_wiki_extract(self, wiki_page_title):
         """
-            We xxx
-            :param: xxx
-            :return: xxx
-            :rtype: xxx
+            We get the extract of wikipedia page for GrandPy's anecdote
+            :param: wiki_page_title is a string
+            :return: the extract (the beginning of the wikipedia page)
+            :rtype: string
         """
         # We define the parameters of the request
         params = {
@@ -113,8 +107,6 @@ class WikiApi:
         }
         try:
             result = requests.get(WIKI_API_URL, params = params)
-            print("cot cot cot")
-            print(result.url)
         except:
             print("The connection to the Wikipedia API (for extract) has failed.")
             raise WikiNetworkError()
@@ -127,7 +119,8 @@ class WikiApi:
                 raise WikiBadRequestError()
             else:
                 try:
-                    if 'query' in data.keys() and list(data['query']['pages'].values())[0]['extract']: # and len(data['query']) != 0
+                    if 'query' in data.keys() and list(data['query']['pages'].values())[0]['extract']:
+                        print(list(data['query']['pages'].values())[0]['extract'])
                         return list(data['query']['pages'].values())[0]['extract']
                 except:
                     print("JSON does not contain an extract.")
@@ -135,7 +128,8 @@ class WikiApi:
 
     def get_wiki_page_title_and_coordinates(self, coordinates):
         """
-            We get the title of the Wikipedia page and the place's wiki coordinates
+            We get the title of the Wikipedia page and
+            the place's wiki coordinates from the wiki API
             :param: coordinates is a tuple with latitude and longitude of the
             place from map API.
             :return: the page title and place coordinates from Wikipedia
@@ -175,47 +169,43 @@ class WikiApi:
                             }
                 except:
                     print("JSON does not contain page title & coordinates.")
-                    raise WikiJsonError()                    
-            
+                    raise WikiJsonError()
+
     def get_first_complete_wiki_data(self, raw_string):
         """
-            We get the title of the Wikipedia page and the place's wiki coordinates
-            :param: coordinates is a tuple with latitude and longitude of the
-            place from map API.
-            :return: the page title and place coordinates from Wikipedia
+            We get all the wiki data.
+            :param: raw_string is a string (the raw user question).
+            :return: - title of the Wikipedia page
+                     - extract of the Wikipedia page
+                     - the place's wiki coordinates
             :rtype: dictionary
         """
         complete_wiki_data = {}
         cleaned_question = self.parser.get_cleaned_string(raw_string)
-        print("cleaned_question", cleaned_question)
         # We get the title of the wiki page.
         wiki_page_title = self.get_wiki_page_title(cleaned_question)
-        complete_wiki_data["wiki_page_title"] = wiki_page_title
-        # We get the wiki coordinates.
-        complete_wiki_data["wiki_coordinates"] = self.get_wiki_coordinates(wiki_page_title)
-        # We get the wiki extract.
-        complete_wiki_data["wiki_extract"] = self.get_wiki_extract(wiki_page_title)
-        
-        print("get_complete_wiki_data", complete_wiki_data)
-        return complete_wiki_data
-        
+
+        return {
+            "wiki_page_title": wiki_page_title,
+            "wiki_extract": self.get_wiki_extract(wiki_page_title),
+            "wiki_coordinates": self.get_wiki_coordinates(wiki_page_title)
+        }
+
     def get_second_complete_wiki_data(self, coordinates):
         """
             We recover an extract of Wikipedia page about the cleaned string
             from the API.
             :param: coordinates is a tuple with latitude and longitude of the
             place from map API.
-            :return: the page title, the page extract and the wikipedia
-            coordinates of the place, often more accurate than the map API.
+            :return: - title of the Wikipedia page
+                     - extract of the Wikipedia page
+                     - the place's wiki coordinates
             :rtype: dictionary
         """
         wiki_page_title_and_coordinates = self.get_wiki_page_title_and_coordinates(coordinates)
-        wiki_page_title = wiki_page_title_and_coordinates["page_title"]
-        wiki_coordinates = wiki_page_title_and_coordinates["coordinates"]
-        wiki_extract = self.get_wiki_extract(wiki_page_title)
-        
+
         return {
-            "wiki_page_title": wiki_page_title,
-            "wiki_extract": wiki_extract,
-            "wiki_coordinates": wiki_coordinates
+            "wiki_page_title": wiki_page_title_and_coordinates["page_title"],
+            "wiki_extract": self.get_wiki_extract(wiki_page_title_and_coordinates["page_title"]),
+            "wiki_coordinates": wiki_page_title_and_coordinates["coordinates"]
         }

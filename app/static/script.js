@@ -13,7 +13,7 @@ form.addEventListener("submit", function (event) {
   const questionUrl = `${API_URL}/question?q=${question}`;
 
   fetch(questionUrl)
-  .then(function(response) { 
+  .then(function(response) {
     if(response.ok) {
       response.json()
       .then(function(data) {
@@ -32,20 +32,12 @@ form.addEventListener("submit", function (event) {
         let p3 = displayResponse(wikiData);
 
         if (wikiData["wiki_extract"] == defaultExtract) {
-          let nodes = [createPositiveBloc(p1, p2Negative)]
+          let nodes = [createNegativeBloc(p1, p2Negative)]
           CHAT_AREA.append(...nodes);
         } else {
           let nodes = [createPositiveBloc(p1, p2Positive, p3)]
           CHAT_AREA.append(...nodes);
         }
-        
-        // if (wikiData["wiki_extract"] == defaultExtract) {
-        //   let nodes = [p1, p2Negative];
-        //   CHAT_AREA.append(...nodes);
-        // } else {
-        //   let nodes = [p1, p2Positive, p3];
-        //   CHAT_AREA.append(...nodes);
-        // }
 
         scrollToBottom();
 
@@ -112,9 +104,6 @@ function createPositiveBloc(p1, p2Positive, p3) {
   div.appendChild(p1);
   div.appendChild(p2Positive);
   div.appendChild(p3);
-  // div.insertAdjacentHTML('afterbegin', p1);
-  // div.insertAdjacentHTML('beforeend', p2Positive);
-  // div.insertAdjacentHTML('beforeend', p3);
 
   return div
 }
@@ -125,8 +114,6 @@ function createNegativeBloc(p1, p2Negative) {
   div.className = "negative-bloc";
   div.appendChild(p1);
   div.appendChild(p2Negative);
-  // div.insertAdjacentHTML(afterbegin, p1);
-  // div.insertAdjacentHTML(beforeend, p2Negative);
 
   return div
 }
@@ -173,7 +160,7 @@ function displayMap(mapApiKey, mapData) {
     lat: mapData[0],
     lng: mapData[1]
    }
-  
+
   const mapContainer = document.getElementById('map-area');
   mapContainer.innerText = ''
 

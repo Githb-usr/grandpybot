@@ -3,6 +3,7 @@
 
 import re
 import unicodedata
+
 from config.settings import STOPWORDS
 
 class Parser:
@@ -37,7 +38,7 @@ class Parser:
             :param: no_accent_data is a string
             :return: a string without special characters
             :rtype: string
-            Example : "who #are you?" --> "who are you"
+            Example : "l'horloge de# no$tre-dame tourne ?" --> "horloge de notre-dame tourne"
         """
         # We delete the letters with quote (l', d', etc.)
         no_quote_letter_data = re.sub("(\s[a-z])'", " ", no_accent_data)
@@ -64,7 +65,7 @@ class Parser:
     def remove_stopwords(self, cleaned_data_list):
         """
             Removal of unnecessary words from a pre-defined list
-            :param: cleaned_data_list is a list of cleaned strings
+            :param: cleaned_data_list is a list of cleaned words (strings)
             :return: a list containing only the important words
             :rtype: list
         """
@@ -82,7 +83,7 @@ class Parser:
         # We remove unnecessary words from the original list
         for word in words_to_remove:
             cleaned_data_list.remove(word)
-            
+
         self.cleaned_string_words_list = cleaned_data_list
 
         return self.cleaned_string_words_list
@@ -94,7 +95,7 @@ class Parser:
             :return: a parsed/cleaned string without accents, special
             charatcters or unnecessary words
             :rtype: string
-        """        
+        """
         # We remove any accents and special characters (punctuation and others)
         no_accent_data = self.remove_accented_characters(raw_string)
         no_special_characters_data = self.remove_special_characters(no_accent_data)
