@@ -123,6 +123,11 @@ main {
     border: 1px #000 solid;
 }
 
+.positive-bloc, .negative-bloc {
+    display: flex;
+    flex-direction: column;
+}
+
 .chat-question {
     position: relative;
     width: 75%;
@@ -136,7 +141,7 @@ main {
     position: relative;
     align-self: flex-end;
     width: 75%;
-    margin: 10px 10px 25px 10px;
+    margin: 10px;
     padding: 10px;
     background-color:#EDF26C;
     border-radius: 15px;
