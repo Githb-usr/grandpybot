@@ -4,9 +4,11 @@
 from dotenv import dotenv_values
 from flask import Flask, request, redirect, url_for, render_template, jsonify
 from . import app
-from app.api.wiki_api import WikiApi
 from app.api.map_api import MapApi
-from app.api.parser import Parser
+from app.api.wiki_api import WikiApi
+from config.settings import DEFAULT_COORDINATES, DEFAULT_TITLE, DEFAULT_EXTRACT, POSITIVE_GRANDPY_MESSAGES, NEGATIVE_GRANDPY_MESSAGES, DEFAULT_RESPONSE
+import random
+from app.errors import HereNetworkError, HereBadRequestError, HereJsonError, WikiNetworkError, WikiBadRequestError, WikiJsonError
 
 config = dotenv_values(".env")
 
@@ -28,15 +30,39 @@ def getQuestion():
     # We get the question from the user
     question = request.args.get('q')
     #Data are processed by Python
-    map_object = MapApi()
-    map_coord = map_object.choose_answer(question)
     wiki_object = WikiApi()
-    wiki_data = wiki_object.get_wikipedia_data(map_coord)
-    # We create a dictionary containing the data we want to send to AJAX
-    response = {
-        "map": map_coord,
-        "wiki": wiki_data,
-        "apiKey": config['HERE_JS_API_KEY']
-    }
-
-    return jsonify(response)
+    try:
+        wiki_data = wiki_object.get_first_complete_wiki_data(question)
+    except (WikiNetworkError, WikiBadRequestError, WikiJsonError, HereNetworkError, HereBadRequestError, HereJsonError):
+        print("Something went wrong (first step).")
+        map_object = MapApi()
+        try:
+            map_coord = map_object.get_cleaned_map_data(question)
+            wiki_data = wiki_object.get_second_complete_wiki_data(map_coord)
+        except (WikiNetworkError, WikiBadRequestError, WikiJsonError, HereNetworkError, HereBadRequestError, HereJsonError):
+            print("Something went wrong (second step).")
+            return jsonify(DEFAULT_RESPONSE)
+        else:
+            response = {
+                "map": map_coord,
+                "wiki": wiki_data,
+                "apiKey": config['HERE_JS_API_KEY'],
+                "default_title": DEFAULT_TITLE,
+                "default_extract": DEFAULT_EXTRACT,
+                "positive_messages": POSITIVE_GRANDPY_MESSAGES,
+                "negative_messages": NEGATIVE_GRANDPY_MESSAGES
+            }
+            print("second", response["wiki"])
+            return jsonify(response)
+    else:
+        response = {
+            "map": DEFAULT_COORDINATES,
+            "wiki": wiki_data,
+            "apiKey": config['HERE_JS_API_KEY'],
+            "default_title": DEFAULT_TITLE,
+            "default_extract": DEFAULT_EXTRACT,
+            "positive_messages": POSITIVE_GRANDPY_MESSAGES,
+            "negative_messages": NEGATIVE_GRANDPY_MESSAGES
+        }
+        print("first", response["wiki"])
+        return jsonify(response)
