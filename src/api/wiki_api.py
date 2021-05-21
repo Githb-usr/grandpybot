@@ -4,8 +4,8 @@
 from dotenv import dotenv_values
 import requests
 
-from app.errors import WikiNetworkError, WikiJsonError, WikiBadRequestError
-from app.api.parser import Parser
+from src.errors import WikiNetworkError, WikiJsonError, WikiBadRequestError
+from src.api.parser import Parser
 from config.settings import WIKI_API_URL
 
 class WikiApi:

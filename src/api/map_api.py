@@ -4,8 +4,8 @@
 import os
 import requests
 
-from app.errors import HereNetworkError, HereJsonError, HereBadRequestError
-from app.api.parser import Parser
+from src.errors import HereNetworkError, HereJsonError, HereBadRequestError
+from src.api.parser import Parser
 from config.settings import MAP_API_URL
 
 class MapApi:
