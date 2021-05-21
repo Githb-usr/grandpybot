@@ -3,16 +3,14 @@
 
 import random
 
-from dotenv import dotenv_values
 from flask import Flask, request, redirect, url_for, render_template, jsonify
+import os
 
-from . import app
-from app.errors import HereNetworkError, HereBadRequestError, HereJsonError, WikiNetworkError, WikiBadRequestError, WikiJsonError
-from app.api.map_api import MapApi
-from app.api.wiki_api import WikiApi
+from . import application
+from src.errors import HereNetworkError, HereBadRequestError, HereJsonError, WikiNetworkError, WikiBadRequestError, WikiJsonError
+from src.api.map_api import MapApi
+from src.api.wiki_api import WikiApi
 from config.settings import DEFAULT_COORDINATES, DEFAULT_TITLE, DEFAULT_EXTRACT, POSITIVE_GRANDPY_MESSAGES, NEGATIVE_GRANDPY_MESSAGES, DEFAULT_RESPONSE
-
-config = dotenv_values(".env")
 
 @app.route('/')
 def index():
@@ -31,6 +29,7 @@ def getQuestion():
     """
     # We get the question from the user
     question = request.args.get('q')
+    print("viexs", os.environ.get('PORT'))
     #Data are processed by Python
     wiki_object = WikiApi()
     try:
@@ -48,7 +47,7 @@ def getQuestion():
             response = {
                 "map": map_coord,
                 "wiki": wiki_data,
-                "apiKey": config['HERE_JS_API_KEY'],
+                "apiKey": os.environ.get('HERE_JS_API_KEY'),
                 "default_title": DEFAULT_TITLE,
                 "default_extract": DEFAULT_EXTRACT,
                 "positive_messages": POSITIVE_GRANDPY_MESSAGES,
@@ -60,7 +59,7 @@ def getQuestion():
         response = {
             "map": DEFAULT_COORDINATES,
             "wiki": wiki_data,
-            "apiKey": config['HERE_JS_API_KEY'],
+            "apiKey": os.environ.get('HERE_JS_API_KEY'),
             "default_title": DEFAULT_TITLE,
             "default_extract": DEFAULT_EXTRACT,
             "positive_messages": POSITIVE_GRANDPY_MESSAGES,

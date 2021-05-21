@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from dotenv import dotenv_values
+import os
 import requests
 
-from app.errors import HereNetworkError, HereJsonError, HereBadRequestError
-from app.api.parser import Parser
+from src.errors import HereNetworkError, HereJsonError, HereBadRequestError
+from src.api.parser import Parser
 from config.settings import MAP_API_URL
 
 class MapApi:
@@ -29,11 +29,11 @@ class MapApi:
             :return: locations returned by the API
             :rtype: JSON
         """
-        config = dotenv_values(".env")
+        # config = dotenv_values(".env")
 
         # We define the parameters of the request
         params = {
-            "apiKey": config["HERE_JS_API_KEY"],
+            "apiKey": os.environ.get('HERE_JS_API_KEY'),
             "lang": "fr",
             "q": cleaned_question
             }

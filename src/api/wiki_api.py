@@ -4,8 +4,8 @@
 from dotenv import dotenv_values
 import requests
 
-from app.errors import WikiNetworkError, WikiJsonError, WikiBadRequestError
-from app.api.parser import Parser
+from src.errors import WikiNetworkError, WikiJsonError, WikiBadRequestError
+from src.api.parser import Parser
 from config.settings import WIKI_API_URL
 
 class WikiApi:
@@ -182,6 +182,7 @@ class WikiApi:
         """
         complete_wiki_data = {}
         cleaned_question = self.parser.get_cleaned_string(raw_string)
+        print(cleaned_question)
         # We get the title of the wiki page.
         wiki_page_title = self.get_wiki_page_title(cleaned_question)
 
