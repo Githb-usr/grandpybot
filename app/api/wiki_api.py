@@ -182,6 +182,7 @@ class WikiApi:
         """
         complete_wiki_data = {}
         cleaned_question = self.parser.get_cleaned_string(raw_string)
+        print(cleaned_question)
         # We get the title of the wiki page.
         wiki_page_title = self.get_wiki_page_title(cleaned_question)
 
