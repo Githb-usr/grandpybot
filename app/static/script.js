@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:5000";
+const API_URL = "http://127.0.0.1:33507";
 const WIKI_URL = "https://fr.wikipedia.org/wiki";
 const MAP_URL = "https://geocode.search.hereapi.com/v1/geocode";
 const CHAT_AREA = document.getElementById('chat-area');
@@ -10,7 +10,10 @@ form.addEventListener("submit", function (event) {
 
   // We send the content of the form to the server
   let question = document.getElementById('user-question').value;
-  const questionUrl = `${API_URL}/question?q=${question}`;
+  // const questionUrl = `${API_URL}/question?q=${question}`;
+
+  const questionUrl = new URL(`${API_URL}/question`)
+  questionUrl.searchParams.append('q', question)
 
   fetch(questionUrl)
   .then(function(response) {
