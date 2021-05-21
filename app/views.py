@@ -29,7 +29,7 @@ def getQuestion():
     """
     # We get the question from the user
     question = request.args.get('q')
-    print("viexs", os.environ.get('HERE_JS_API_KEY'))
+    print("viexs", os.environ.get('PORT'))
     #Data are processed by Python
     wiki_object = WikiApi()
     try:
