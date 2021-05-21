@@ -10,12 +10,17 @@ form.addEventListener("submit", function (event) {
 
   // We send the content of the form to the server
   let question = document.getElementById('user-question').value;
-  // const questionUrl = `${API_URL}/question?q=${question}`;
-
   const questionUrl = new URL(`${API_URL}/question`)
   questionUrl.searchParams.append('q', question)
 
-  fetch(questionUrl)
+  fetch(questionUrl, {
+    method: "GET",
+    credentials: "include",
+    cache: "no-cache",
+    headers: new Headers({
+        "content-type": "application/json"
+    })
+  })
   .then(function(response) {
     if(response.ok) {
       response.json()
