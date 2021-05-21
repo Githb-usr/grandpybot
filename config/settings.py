@@ -5,9 +5,7 @@
     Settings file
     To manage application constants
 """
-from dotenv import dotenv_values
-
-config = dotenv_values(".env")
+import os
 
 WIKI_API_URL = "https://fr.wikipedia.org/w/api.php"
 MAP_API_URL = "https://geocode.search.hereapi.com/v1/geocode"
@@ -46,7 +44,7 @@ DEFAULT_RESPONSE = {
                     "wiki_extract": DEFAULT_EXTRACT,
                     "wiki_coordinates": DEFAULT_COORDINATES
                     },
-                "apiKey": config['HERE_JS_API_KEY'],
+                "apiKey": os.environ.get('HERE_JS_API_KEY'),
                 "default_title": DEFAULT_TITLE,
                 "default_extract": DEFAULT_EXTRACT,
                 "positive_messages": POSITIVE_GRANDPY_MESSAGES,
