@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from dotenv import dotenv_values
+import os
 import requests
 
-from app.errors import HereNetworkError, HereJsonError, HereBadRequestError
-from app.api.parser import Parser
-from config.settings import MAP_API_URL
+from src.errors import HereNetworkError, HereJsonError, HereBadRequestError
+from src.api.parser import Parser
+from config.settings import MAP_API_URL, NO_DATA, BAD_DATA, DEFAULT_COORDINATES
 
 class MapApi:
     """
@@ -29,11 +29,11 @@ class MapApi:
             :return: locations returned by the API
             :rtype: JSON
         """
-        config = dotenv_values(".env")
+        # config = dotenv_values(".env")
 
         # We define the parameters of the request
         params = {
-            "apiKey": config["HERE_JS_API_KEY"],
+            "apiKey": os.environ.get('HERE_JS_API_KEY'),
             "lang": "fr",
             "q": cleaned_question
             }
@@ -54,6 +54,7 @@ class MapApi:
             else:
                 try:
                     if 'items' in json_data.keys() and len(json_data['items']) != 0:
+                        print("toto", json_data['items'])
                         return json_data['items']
                 except:
                     print("JSON does not contain map_data.")
@@ -87,6 +88,8 @@ class MapApi:
             if set(self.cleaned_question_words_list) <= set(parsed_label.split(' ')):
                 filtered_map_data_list.append(item)
 
+        if not filtered_map_data_list:
+            return DEFAULT_COORDINATES
         # We return the coordinates of the first place in the list
         return (
             filtered_map_data_list[0]['position']['lat'],
@@ -102,10 +105,16 @@ class MapApi:
         """
         # We retrieve the parsed data from the user's question.
         self.cleaned_question = self.parser.get_cleaned_string(raw_string)
+        
+        if self.cleaned_question == NO_DATA:
+            print("La question de l'utilisateur est vide (map).")
+            return DEFAULT_COORDINATES
         # We store the parsed list of words, for later use
         self.cleaned_question_words_list = self.parser.cleaned_string_words_list
         # We get all API response
         raw_map_data = self.get_raw_map_data(self.cleaned_question)
 
+        if raw_map_data is None:
+            return DEFAULT_COORDINATES
         # We return the first response after filtering
         return self.get_filtered_map_data_list(raw_map_data)
