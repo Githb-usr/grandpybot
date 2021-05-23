@@ -54,7 +54,7 @@ class Parser:
             Example : "l'horloge de# no$tre-dame tourne ?" --> "horloge de notre-dame tourne"
         """
         # We delete the letters with quote (l', d', etc.)
-        no_quote_letter_data = re.sub("(\s[a-z])'", " ", raw_string)
+        no_quote_letter_data = re.sub(r"(\s[a-z])'", " ", raw_string)
         # We delete the special characters except the hyphen
         return re.sub(r'[^\-\w\s]','',no_quote_letter_data)
     
