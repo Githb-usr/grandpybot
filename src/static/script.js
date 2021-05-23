@@ -9,7 +9,9 @@ form.addEventListener("submit", function (event) {
   event.preventDefault();
 
   // We send the content of the form to the server
-  let question = document.getElementById('user-question').value;
+  let rawQuestion = document.getElementById('user-question').value;
+  let question = rawQuestion.trim();
+
   if(question.length > 0) {
     const questionUrl = new URL(`${API_URL}/question`)
     questionUrl.searchParams.append('q', question)
@@ -33,50 +35,57 @@ form.addEventListener("submit", function (event) {
           let p2Positive = selectReplica(positiveMessages);
           let p3 = displayResponse(wikiData);
 
-          if (wikiData["wiki_extract"] == defaultExtract) {
-            let nodes = [createNegativeBloc(p1, p2Negative)]
-            CHAT_AREA.append(...nodes);
-          } else {
-            let nodes = [createPositiveBloc(p1, p2Positive, p3)]
-            CHAT_AREA.append(...nodes);
-          }
+          CHAT_AREA.appendChild(p1);
+          // We display the answer after a certain time
+          setTimeout(function() { 
+            if (wikiData["wiki_extract"] == defaultExtract) {
+              let nodes = [createNegativeResponse(p2Negative)];
+              CHAT_AREA.append(...nodes);
+            } else {
+              let nodes = [createPositiveResponse(p2Positive, p3)];
+              CHAT_AREA.append(...nodes);
+            }
+            scrollToBottom();
+            // We change the title of the map and display the map
+            const mapTitle = document.getElementById('map-title');
+            if(wikiData["wiki_page_title"] != defaultTitle) {
+              mapTitle.innerText = 'Situez "' + wikiData["wiki_page_title"] + '" sur la carte'
+            } else {
+              mapTitle.innerText = 'Pas de carte à afficher, désolé...'
+            }
 
-          scrollToBottom();
-
-          // We change the title of the map and display the map
-          const mapTitle = document.getElementById('map-title');
-          if(wikiData["wiki_page_title"] != defaultTitle) {
-            mapTitle.innerText = 'Situez "' + wikiData["wiki_page_title"] + '" sur la carte'
-          } else {
-            mapTitle.innerText = 'Pas de carte à afficher, désolé...'
-          }
-
-          displayMap(mapApiKey, wikiData["wiki_coordinates"])
+            displayMap(mapApiKey, wikiData["wiki_coordinates"])
+          }, 500);
         })
       } else {
-        console.log('ça marche pas')
+        console.log('Bad response')
       }
     })
-    .catch(error => console.log('La fonction fetch ne fonctionne pas correctement', error))
+    .catch(error => console.log('The fetch function does not work properly', error))
   } else {
+    // We send a warning message in case of an empty form (empty question or spaces)
     let p = document.createElement('p');
     p.className = "empty-form";
     p.textContent = 'Attention : vous devez posez une question avant de cliquer sur "OK"';
     CHAT_AREA.append(p);
+    scrollToBottom();
   }
 })
 
 
 // We scroll automatically at the bottom of the chat
 function scrollToBottom() {
-  CHAT_AREA.scrollTop = (CHAT_AREA.scrollHeight + 20);
+  CHAT_AREA.scrollTop = (CHAT_AREA.scrollHeight);
 }
 
 // We select a Grandpy replica at random
 function displayQuestion(question) {
+  let div = document.createElement('div');
+  div.className = "positive-bloc";
   let p = document.createElement('p');
   p.className = "chat-question";
   p.textContent = question;
+  div.appendChild(p);
 
   return p
 }
@@ -107,10 +116,9 @@ function displayResponse(wikiData) {
 }
 
 // We create a bloc of chat (a question with its positive response)
-function createPositiveBloc(p1, p2Positive, p3) {
+function createPositiveResponse(p2Positive, p3) {
   let div = document.createElement('div');
   div.className = "positive-bloc";
-  div.appendChild(p1);
   div.appendChild(p2Positive);
   div.appendChild(p3);
 
@@ -118,10 +126,9 @@ function createPositiveBloc(p1, p2Positive, p3) {
 }
 
 // We create a bloc of chat (a question with its negative response)
-function createNegativeBloc(p1, p2Negative) {
+function createNegativeResponse(p2Negative) {
   let div = document.createElement('div');
   div.className = "negative-bloc";
-  div.appendChild(p1);
   div.appendChild(p2Negative);
 
   return div

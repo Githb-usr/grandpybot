@@ -147,6 +147,15 @@ main {
     border-radius: 15px;
 }
 
+.empty-form {
+    width: 90%;
+    margin: 10px;
+    padding: 10px;
+    background-color:orange;
+    border-radius: 15px;
+    font-weight: bold;
+}
+
 /* Map part */
 #map-section {
     margin-left: 10px;
