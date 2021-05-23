@@ -4,7 +4,7 @@
 import re
 import unicodedata
 
-from config.settings import STOPWORDS
+from config.settings import PARSER_REGEX, STOPWORDS, NO_DATA
 
 class Parser:
     """
@@ -15,6 +15,18 @@ class Parser:
         """ Constructor """
         self.cleaned_string = ''
         self.cleaned_string_words_list = []
+        
+    def refuse_empty_string(self, raw_string):
+        """
+            We check that the user input value is not empty or made up of spaces
+            :param: raw_string is a string
+            :return: a string "no_data" indicating that the response is empty 
+            or consists of spaces
+            :rtype: string
+        """
+        trim_raw_string = raw_string.strip()
+        if re.match(r"^(?![\s\S])", trim_raw_string):
+            return NO_DATA
 
     def remove_accented_characters(self, raw_string):
         """
@@ -24,9 +36,10 @@ class Parser:
             :rtype: string
             Example : "Mémé réclame à boire !" --> "meme reclame a boire !"
         """
+        trimmed_string = raw_string.strip()
         # We replace the accented characters and use lower case
         no_accent_data = ''.join(
-            (c for c in unicodedata.normalize('NFD', raw_string)
+            (c for c in unicodedata.normalize('NFD', trimmed_string)
              if unicodedata.category(c) != 'Mn')
             )
 
@@ -49,10 +62,22 @@ class Parser:
         """
             String cleaning to facilitate comparisons, step 3
             :param: raw_string is a string
-            :return: a string xxx
+            :return: a shorter string with the relevent part
             :rtype: string
-            Example : "xxx" --> "xxx"
+            Example : "toi qui sait tout, dis-moi ou se trouve la gare de lyon
+            à paris" --> "la gare de lyon a paris"
         """        
+        regex_result = []
+        # We apply the different predefined regex
+        for regex in PARSER_REGEX:
+            string = re.match(regex[0], raw_string)
+            if string is not None:
+                regex_result.append(string[regex[1]].strip())
+                
+        if not regex_result:
+            return raw_string
+        # regex_result being a list, we return only its content which is a string
+        return regex_result[0]
 
     def get_cleaned_data_list(self, raw_string):
         """
@@ -105,14 +130,21 @@ class Parser:
             charatcters or unnecessary words
             :rtype: string
         """
+        if self.refuse_empty_string(raw_string) == NO_DATA:
+            print("La question de l'utilisateur est vide ou constituée d'espaces.")
+            return NO_DATA
+        
         # We remove any accents and special characters (punctuation and others)
         no_accent_data = self.remove_accented_characters(raw_string)
         no_special_characters_data = self.remove_special_characters(no_accent_data)
+        # We apply the regex
+        regex_result = self.keep_relevent_parts(no_special_characters_data)
         # We get the original cleaned word list
-        cleaned_data_list = self.get_cleaned_data_list(no_special_characters_data)
+        cleaned_data_list = self.get_cleaned_data_list(regex_result)
         # A tuple is retrieved from the list of filtered words
         cleaned_string_words_list = tuple(self.remove_stopwords(cleaned_data_list))
         # we reconstitute a string from the tuple
         cleaned_string = ' '.join(cleaned_string_words_list)
 
         return cleaned_string
+            

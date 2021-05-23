@@ -6,7 +6,7 @@ import random
 from flask import Flask, request, redirect, url_for, render_template, jsonify
 import os
 
-from . import application
+from . import app
 from src.errors import HereNetworkError, HereBadRequestError, HereJsonError, WikiNetworkError, WikiBadRequestError, WikiJsonError
 from src.api.map_api import MapApi
 from src.api.wiki_api import WikiApi
@@ -29,7 +29,6 @@ def getQuestion():
     """
     # We get the question from the user
     question = request.args.get('q')
-    print("viexs", os.environ.get('PORT'))
     #Data are processed by Python
     wiki_object = WikiApi()
     try:
