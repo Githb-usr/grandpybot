@@ -43,6 +43,7 @@ def getQuestion():
             print("Something went wrong (second step).")
             return jsonify(DEFAULT_RESPONSE)
         else:
+            print(map_coord)
             response = {
                 "map": map_coord,
                 "wiki": wiki_data,
@@ -56,7 +57,6 @@ def getQuestion():
             return jsonify(response)
     else:
         response = {
-            "map": DEFAULT_COORDINATES,
             "wiki": wiki_data,
             "apiKey": os.environ.get('HERE_JS_API_KEY'),
             "default_title": DEFAULT_TITLE,

@@ -4,9 +4,9 @@
 import os
 import requests
 
+from config.settings import MAP_API_URL, NO_DATA, DEFAULT_COORDINATES
 from src.errors import HereNetworkError, HereJsonError, HereBadRequestError
 from src.api.parser import Parser
-from config.settings import MAP_API_URL, NO_DATA, BAD_DATA, DEFAULT_COORDINATES
 
 class MapApi:
     """
@@ -29,8 +29,6 @@ class MapApi:
             :return: locations returned by the API
             :rtype: JSON
         """
-        # config = dotenv_values(".env")
-
         # We define the parameters of the request
         params = {
             "apiKey": os.environ.get('HERE_JS_API_KEY'),
@@ -47,20 +45,21 @@ class MapApi:
             # the information we are interested in) of the json returned by the API
             try:
                 if result.status_code == 200:
-                    json_data = result.json()
+                    json_data = {}
             except:
                 print("Bad request during MapApi.get_raw_map_data.")
                 raise HereBadRequestError()
             else:
                 try:
-                    if 'items' in json_data.keys() and len(json_data['items']) != 0:
-                        print("toto", json_data['items'])
-                        return json_data['items']
+                    if 'items' in result.json() and len(result.json()['items']) > 0:
+                        json_data = result.json()['items']
+                        
+                        return json_data
                 except:
                     print("JSON does not contain map_data.")
-                    raise HereJsonError()
+                    raise HereJsonError
 
-    def get_filtered_map_data_list(self, raw_map_data):
+    def get_filtered_map_data_list(self, raw_map_data, string_words_list):
         """
             The API responses are filtered to reduce the number of responses
             and keep only the most relevant ones.
@@ -80,16 +79,16 @@ class MapApi:
         # We keep only those whose "label" key contains all the keywords of the
         # user question
         filtered_map_data_list = []
-        parsed_labels = []
         for item in map_data_dict_list:
-            label = item['address']['label']
-            parsed_label = self.parser.get_cleaned_string(label)
-            parsed_labels.append(parsed_label)
-            if set(self.cleaned_question_words_list) <= set(parsed_label.split(' ')):
-                filtered_map_data_list.append(item)
+            if 'address' in item.keys() and 'label' in item['address'].keys():            
+                label = item['address']['label']
+                parsed_label = self.parser.get_cleaned_string(label)
+                if len(set(string_words_list).intersection(set(parsed_label.split(' ')))) > 0:
+                    filtered_map_data_list.append(item)
 
         if not filtered_map_data_list:
             return DEFAULT_COORDINATES
+
         # We return the coordinates of the first place in the list
         return (
             filtered_map_data_list[0]['position']['lat'],
@@ -104,17 +103,19 @@ class MapApi:
             :rtype: tuple
         """
         # We retrieve the parsed data from the user's question.
-        self.cleaned_question = self.parser.get_cleaned_string(raw_string)
+        cleaned_question = self.parser.get_cleaned_string(raw_string)
         
-        if self.cleaned_question == NO_DATA:
+        if cleaned_question == NO_DATA:
             print("La question de l'utilisateur est vide (map).")
             return DEFAULT_COORDINATES
+
         # We store the parsed list of words, for later use
-        self.cleaned_question_words_list = self.parser.cleaned_string_words_list
+        cleaned_question_words_list = self.parser.cleaned_string_words_list
         # We get all API response
-        raw_map_data = self.get_raw_map_data(self.cleaned_question)
+        raw_map_data = self.get_raw_map_data(cleaned_question)
 
         if raw_map_data is None:
             return DEFAULT_COORDINATES
+
         # We return the first response after filtering
-        return self.get_filtered_map_data_list(raw_map_data)
+        return self.get_filtered_map_data_list(raw_map_data, cleaned_question_words_list)
