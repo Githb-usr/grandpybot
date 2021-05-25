@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from collections import OrderedDict
 import re
 import unicodedata
 
@@ -54,11 +55,11 @@ class Parser:
             Example : "l'horloge de# no$tre-dame tourne ?" --> "horloge de notre-dame tourne"
         """
         # We delete the letters with quote (l', d', etc.)
-        no_quote_letter_data = re.sub("(\s[a-z])'", " ", raw_string)
+        no_quote_letter_data = re.sub(r"(\s[a-z])'", " ", raw_string)
         # We delete the special characters except the hyphen
         return re.sub(r'[^\-\w\s]','',no_quote_letter_data)
     
-    def keep_relevent_parts(self, raw_string):
+    def keep_relevent_part(self, raw_string):
         """
             String cleaning to facilitate comparisons, step 3
             :param: raw_string is a string
@@ -87,32 +88,42 @@ class Parser:
             :rtype: list
         """
         # We transform the string into a list of words
+        cleaned_data_temp_list = []
         cleaned_data_list = []
-        cleaned_data_list = raw_string.split(' ')
+        cleaned_data_temp_list = raw_string.split(' ')
         # We delete the duplicates
-        cleaned_data_list = list(set(cleaned_data_list))
+        cleaned_data_list = list(OrderedDict.fromkeys(cleaned_data_temp_list))
         # We delete the empty items
-        cleaned_data_list = list(filter(('').__ne__, cleaned_data_list))
+        value_to_delete = ''
+        cleaned_data_list = [i for i in cleaned_data_list if i != value_to_delete]
 
         return cleaned_data_list
+    
+    def get_clean_stopwords_list(self):
+        """
+            Remove accents in predefined stopwords list
+            :return: a clean stopwords list without accents
+            :rtype: list
+        """
+        clean_stopwords_list = []
+        for word in STOPWORDS:
+            clean_word = self.remove_accented_characters(word)
+            clean_stopwords_list.append(clean_word.strip())
+            
+        # We delete the duplicates
+        clean_stopwords_list = list(set(clean_stopwords_list))
+            
+        return clean_stopwords_list
 
-    def remove_stopwords(self, raw_list):
+    def remove_stopwords(self, raw_list, clean_stopwords_list):
         """
             Removal of unnecessary words from a pre-defined list
             :param: cleaned_data_list is a list of cleaned words (strings)
             :return: a list containing only the important words
             :rtype: list
         """
-        # Accented characters are removed from the Stopwords list
-        clean_stopwords = []
-        for word in STOPWORDS:
-            clean_word = self.remove_accented_characters(word)
-            clean_stopwords.append(clean_word.strip())
-
-        # We delete the duplicates
-        clean_stopwords = list(set(clean_stopwords))
         # We determine the list of words to delete in the original list
-        words_to_remove = list(set(raw_list) & set(clean_stopwords))
+        words_to_remove = list(set(raw_list) & set(clean_stopwords_list))
 
         # We remove unnecessary words from the original list
         for word in words_to_remove:
@@ -138,13 +149,13 @@ class Parser:
         no_accent_data = self.remove_accented_characters(raw_string)
         no_special_characters_data = self.remove_special_characters(no_accent_data)
         # We apply the regex
-        regex_result = self.keep_relevent_parts(no_special_characters_data)
+        regex_result = self.keep_relevent_part(no_special_characters_data)
         # We get the original cleaned word list
         cleaned_data_list = self.get_cleaned_data_list(regex_result)
         # A tuple is retrieved from the list of filtered words
-        cleaned_string_words_list = tuple(self.remove_stopwords(cleaned_data_list))
+        clean_stopwords_list = self.get_clean_stopwords_list()
+        cleaned_string_words_list = tuple(self.remove_stopwords(cleaned_data_list, clean_stopwords_list))
         # we reconstitute a string from the tuple
         cleaned_string = ' '.join(cleaned_string_words_list)
 
         return cleaned_string
-            
