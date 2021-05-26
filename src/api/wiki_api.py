@@ -24,9 +24,6 @@ class WikiApi:
             :return: the wiki page title (not parsed string)
             :rtype: string
         """
-        if cleaned_question == NO_DATA:
-            return NO_DATA
-
         # We define the parameters of the request
         params = {
             "action": "query",
@@ -60,9 +57,6 @@ class WikiApi:
             :return: coordinates (latitude and longitude) of the location
             :rtype: tuple
         """
-        if wiki_page_title == NO_DATA:
-            return NO_DATA
-
         # We define the parameters of the request
         params = {
             "action": "query",
@@ -101,9 +95,6 @@ class WikiApi:
             :return: the extract (the beginning of the wikipedia page)
             :rtype: string
         """
-        if wiki_page_title == NO_DATA:
-            return NO_DATA
-
         # We define the parameters of the request
         params = {
             "action": "query",

@@ -70,9 +70,7 @@ class MapApi:
             :rtype: tuple
         """
         # Creation of a dictionary containing data from JSON data
-        map_data_dict_list = []
-        for item in raw_map_data:
-            map_data_dict_list.append(item)
+        map_data_dict_list = [item for item in raw_map_data]
 
         # We compare the keywords of the user's question with those of the
         # "label" key of each answer provided by the API.
@@ -116,6 +114,6 @@ class MapApi:
 
         if raw_map_data is None:
             return DEFAULT_COORDINATES
-
+        print(self.get_filtered_map_data_list(raw_map_data, cleaned_question_words_list))
         # We return the first response after filtering
         return self.get_filtered_map_data_list(raw_map_data, cleaned_question_words_list)
