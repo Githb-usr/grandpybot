@@ -6,7 +6,7 @@ import requests
 
 from src.errors import WikiNetworkError, WikiJsonError, WikiBadRequestError
 from src.api.parser import Parser
-from config.settings import WIKI_API_URL, NO_DATA, BAD_DATA, DEFAULT_WIKI_DATA
+from config.settings import WIKI_API_URL, NO_DATA, DEFAULT_WIKI_DATA
 
 class WikiApi:
     """
@@ -24,8 +24,6 @@ class WikiApi:
             :return: the wiki page title (not parsed string)
             :rtype: string
         """
-        if cleaned_question == NO_DATA:
-            return NO_DATA
         # We define the parameters of the request
         params = {
             "action": "query",
@@ -59,8 +57,6 @@ class WikiApi:
             :return: coordinates (latitude and longitude) of the location
             :rtype: tuple
         """
-        if wiki_page_title == NO_DATA:
-            return NO_DATA
         # We define the parameters of the request
         params = {
             "action": "query",
@@ -99,8 +95,6 @@ class WikiApi:
             :return: the extract (the beginning of the wikipedia page)
             :rtype: string
         """
-        if wiki_page_title == NO_DATA:
-            return NO_DATA
         # We define the parameters of the request
         params = {
             "action": "query",
@@ -126,7 +120,6 @@ class WikiApi:
             else:
                 try:
                     if 'query' in data.keys() and list(data['query']['pages'].values())[0]['extract']:
-                        print(list(data['query']['pages'].values())[0]['extract'])
                         return list(data['query']['pages'].values())[0]['extract']
                 except:
                     print("JSON does not contain an extract.")
@@ -143,6 +136,7 @@ class WikiApi:
         """
         if coordinates == NO_DATA:
             return NO_DATA
+
         # We define the parameters of the request
         params = {
             "action": "query",
@@ -190,9 +184,11 @@ class WikiApi:
         """
         complete_wiki_data = {}
         cleaned_question = self.parser.get_cleaned_string(raw_string)
+        
         if cleaned_question == NO_DATA:
             print("La question de l'utilisateur est vide (wiki).")
             return DEFAULT_WIKI_DATA
+
         # We get the title of the wiki page.
         wiki_page_title = self.get_wiki_page_title(cleaned_question)
 
@@ -216,7 +212,7 @@ class WikiApi:
         if coordinates == NO_DATA:
             print("Il n'y a pas de coordonnées valides en provenance de Here.com")
             return DEFAULT_WIKI_DATA
-        
+
         wiki_page_title_and_coordinates = self.get_wiki_page_title_and_coordinates(coordinates)
 
         return {
