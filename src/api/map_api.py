@@ -114,6 +114,6 @@ class MapApi:
 
         if raw_map_data is None:
             return DEFAULT_COORDINATES
-
+        print(self.get_filtered_map_data_list(raw_map_data, cleaned_question_words_list))
         # We return the first response after filtering
         return self.get_filtered_map_data_list(raw_map_data, cleaned_question_words_list)

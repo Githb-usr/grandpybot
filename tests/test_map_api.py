@@ -5,8 +5,8 @@ import pytest
 import requests
 import sys
 
-from config.settings import MAP_API_URL, NO_DATA, DEFAULT_COORDINATES
-from tests.raw_map_data import RAW_MAP_DATA_OK, NO_MAP_DATA, NON_RELEVANT_MAP_DATA
+from config.settings import DEFAULT_COORDINATES
+from tests.raw_data_for_tests import NO_MAP_DATA, RAW_MAP_DATA_OK, NON_RELEVANT_MAP_DATA
 from src import MapApi
 from src import Parser
 from src.errors import HereNetworkError, HereJsonError, HereBadRequestError
@@ -28,7 +28,6 @@ def test_should_get_raw_map_data(monkeypatch):
             return { 'items': RAW_MAP_DATA_OK }
 
     monkeypatch.setattr(requests, 'get', MockRequestsGet)
-
     assert mapApi.get_raw_map_data(cleaned_question) == RAW_MAP_DATA_OK
 
 # def test_should_get_raw_map_data_but_request_fail(monkeypatch):
@@ -118,7 +117,7 @@ def test_should_get_cleaned_map_data(monkeypatch):
 def test_should_get_default_coordinates_but_empty_or_spaces_string(monkeypatch):
     """
         Test of get_cleaned_map_data(), case 2
-        Spaces user question case
+        Spaces or empty user question case
     """
     question = ""
 
