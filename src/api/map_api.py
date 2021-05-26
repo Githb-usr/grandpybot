@@ -70,9 +70,7 @@ class MapApi:
             :rtype: tuple
         """
         # Creation of a dictionary containing data from JSON data
-        map_data_dict_list = []
-        for item in raw_map_data:
-            map_data_dict_list.append(item)
+        map_data_dict_list = [item for item in raw_map_data]
 
         # We compare the keywords of the user's question with those of the
         # "label" key of each answer provided by the API.
