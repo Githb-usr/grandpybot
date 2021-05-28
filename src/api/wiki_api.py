@@ -46,7 +46,7 @@ class WikiApi:
             else:
                 try:
                     return data["query"]["search"][0]["title"]
-                except KeyError:
+                except (KeyError, IndexError):
                     print("The JSON does not contain the page title.")
                     raise WikiJsonError()
 
@@ -82,7 +82,7 @@ class WikiApi:
                         list(data["query"]["pages"].values())[0]["coordinates"][0]["lat"],
                         list(data["query"]["pages"].values())[0]["coordinates"][0]["lon"]
                         )
-                except KeyError:
+                except (KeyError, IndexError):
                     print("JSON does not contain coordinates.")
                     raise WikiJsonError()
 
@@ -118,7 +118,7 @@ class WikiApi:
             else:
                 try:
                     return list(data['query']['pages'].values())[0]['extract']
-                except KeyError:
+                except (KeyError, IndexError):
                     print("JSON does not contain an extract.")
                     raise WikiJsonError()
 
@@ -165,7 +165,7 @@ class WikiApi:
                             "page_title": data['title'],
                             "coordinates": (data['lat'], data['lon'])
                             }
-                except KeyError:
+                except (KeyError, IndexError):
                     print("JSON does not contain page title & coordinates.")
                     raise WikiJsonError()
 

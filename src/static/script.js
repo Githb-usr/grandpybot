@@ -43,10 +43,13 @@ form.addEventListener("submit", function (event) {
         let p2Negative = selectReplica(negativeMessages);
         let p2Positive = selectReplica(positiveMessages);
         let p3 = displayResponse(wikiData);
-
+        
         CHAT_AREA.appendChild(p1);
+        displayLoader()
+        scrollToBottom();
         // We display the answer after a certain time
-        setTimeout(function() { 
+        setTimeout(function() {
+          hideLoader();
           if (wikiData["wiki_extract"] == defaultExtract) {
             let nodes = [createNegativeResponse(p2Negative)];
             CHAT_AREA.append(...nodes);
@@ -69,7 +72,7 @@ form.addEventListener("submit", function (event) {
             displayMap(mapApiKey, wikiData["wiki_coordinates"])
           }
           
-        }, 500);
+        }, 3000);
       })
     } else {
       console.log('Bad response')
@@ -79,22 +82,24 @@ form.addEventListener("submit", function (event) {
 
 })
 
-
 // We scroll automatically at the bottom of the chat
 function scrollToBottom() {
-  CHAT_AREA.scrollTop = (CHAT_AREA.scrollHeight);
+  CHAT_AREA.scrollTop = (CHAT_AREA.scrollHeight + 20);
 }
 
-// We select a Grandpy replica at random
+// We display the user question
 function displayQuestion(question) {
-  let div = document.createElement('div');
-  div.className = "positive-bloc";
+  let div1 = document.createElement('div');
+  div1.className = "chat-question-and-loader-bloc";
+  let div2 = document.createElement('div');
+  div2.className = "chat-question-bloc";
   let p = document.createElement('p');
   p.className = "chat-question";
   p.textContent = question;
-  div.appendChild(p);
+  div1.appendChild(div2);
+  div2.appendChild(p);
 
-  return p
+  return div1
 }
 
 // We select a Grandpy replica at random
@@ -107,7 +112,7 @@ function selectReplica(messagesList) {
   return p
 }
 
-// We select a Grandpy replica at random
+// We display the Grandpy answer
 function displayResponse(wikiData) {
   let p = document.createElement('p');
   p.className = "chat-response";
@@ -122,23 +127,44 @@ function displayResponse(wikiData) {
   return p
 }
 
-// We create a bloc of chat (a question with its positive response)
+// We create a positive bloc of chat (a question with its positive response)
 function createPositiveResponse(p2Positive, p3) {
   let div = document.createElement('div');
-  div.className = "positive-bloc";
+  div.className = "full-positive-bloc";
   div.appendChild(p2Positive);
   div.appendChild(p3);
 
   return div
 }
 
-// We create a bloc of chat (a question with its negative response)
+// We create a negative bloc of chat (a question with its negative response)
 function createNegativeResponse(p2Negative) {
   let div = document.createElement('div');
-  div.className = "negative-bloc";
+  div.className = "full-bloc full-negative-bloc";
   div.appendChild(p2Negative);
 
   return div
+}
+
+// Loader
+// Fonction ajoutant ou supprimant le 'loader'
+function displayLoader() {
+  let questionBloc = document.querySelector('.chat-question-and-loader-bloc');
+  // Ajout de l'image de loader
+  let div1 = document.createElement('div');
+  div1.id = "loader-box";
+  let div2 = document.createElement('div');
+  div2.id = "loader";
+  div1.appendChild(div2);
+  questionBloc.appendChild(div1)
+}
+  // Suppression de l'image de loading
+function hideLoader() {
+  // Suppression de l'élement #box_loader
+  var loader = document.getElementById('loader-box');
+  if (loader) {
+    loader.parentNode.removeChild(loader);
+  }
 }
 
 /*
