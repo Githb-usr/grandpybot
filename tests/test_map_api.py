@@ -3,13 +3,12 @@
 
 import pytest
 import requests
-import sys
 
 from config.settings import DEFAULT_COORDINATES
+from grandpy import MapApi
+from grandpy import Parser
+from grandpy.errors import HereNetworkError, HereJsonError, HereBadRequestError
 from tests.raw_data_for_tests import NO_MAP_DATA, RAW_MAP_DATA_OK, NON_RELEVANT_MAP_DATA
-from src import MapApi
-from src import Parser
-from src.errors import HereNetworkError, HereJsonError, HereBadRequestError
 
 mapApi = MapApi()
 parser = Parser()
@@ -24,7 +23,7 @@ def test_should_get_raw_map_data(monkeypatch):
         Nominal case
     """
     cleaned_question = "musee confluences lyon"
-    
+
     class MockRequestsGet:
         def __init__(self, url, params=None):
             pass
@@ -43,7 +42,7 @@ def test_should_get_raw_map_data_but_connection_fail(monkeypatch):
     """
     with pytest.raises(HereNetworkError):
         cleaned_question = "musee confluences lyon"
-        
+
         class MockRequestsGet:
             def __init__(self, url, params=None):
                 raise requests.HTTPError('Unable to connect to the API')
@@ -54,7 +53,7 @@ def test_should_get_raw_map_data_but_connection_fail(monkeypatch):
 
         monkeypatch.setattr(requests, 'get', MockRequestsGet)
         mapApi.get_raw_map_data(cleaned_question)
-        
+
 def test_should_get_raw_map_data_but_bad_request(monkeypatch):
     """
         Test of get_raw_map_data(), case 3
@@ -62,7 +61,7 @@ def test_should_get_raw_map_data_but_bad_request(monkeypatch):
     """
     with pytest.raises(HereBadRequestError):
         cleaned_question = "musee confluences lyon"
-        
+
         class MockRequestsGet:
             def __init__(self, url, params=None):
                 pass
@@ -73,7 +72,7 @@ def test_should_get_raw_map_data_but_bad_request(monkeypatch):
 
         monkeypatch.setattr(requests, 'get', MockRequestsGet)
         mapApi.get_raw_map_data(cleaned_question)
-        
+
 def test_should_get_raw_map_data_but_key_error(monkeypatch):
     """
         Test of get_raw_map_data(), case 4
@@ -81,7 +80,7 @@ def test_should_get_raw_map_data_but_key_error(monkeypatch):
     """
     with pytest.raises(HereJsonError):
         cleaned_question = "musee confluences lyon"
-        
+
         class MockRequestsGet:
             def __init__(self, url, params=None):
                 pass
@@ -105,7 +104,7 @@ def test_should_get_filtered_map_data_list(monkeypatch):
     question = "Bonjour, que peux-tu me dire à propos du musée des Confluences à Lyon ?"
     raw_map_data = RAW_MAP_DATA_OK
     cleaned_string_words_list = ['musee', 'confluences', 'lyon']
-    
+
     def mock_get_cleaned_string(string):
         return "musee confluences 69002 lyon france"
 
@@ -121,14 +120,14 @@ def test_should_get_filtered_map_data_list_but_non_relevant_map_data(monkeypatch
     question = "Bonjour, que peux-tu me dire à propos de Notre-Dame de paris ?"
     raw_map_data = NON_RELEVANT_MAP_DATA
     cleaned_string_words_list = ['notre-dame', 'paris']
-    
+
     def mock_get_cleaned_string(string):
         return "rue champs lyon france"
-    
+
     monkeypatch.setattr(parser, 'get_cleaned_string', mock_get_cleaned_string)
     final_coordinates = mapApi.get_filtered_map_data_list(raw_map_data, cleaned_string_words_list)
     assert final_coordinates == DEFAULT_COORDINATES
-    
+
 def test_should_get_filtered_map_data_list_but_no_map_data(monkeypatch):
     """
         Test of get_filtered_map_data_list(), case 3
@@ -137,10 +136,10 @@ def test_should_get_filtered_map_data_list_but_no_map_data(monkeypatch):
     question = "shgfhsdghjsdg"
     raw_map_data = NO_MAP_DATA
     cleaned_string_words_list = ['shgfhsdghjsdg']
-    
+
     def mock_get_cleaned_string(string):
         return "shgfhsdghjsdg"
-    
+
     monkeypatch.setattr(parser, 'get_cleaned_string', mock_get_cleaned_string)
     final_coordinates = mapApi.get_filtered_map_data_list(raw_map_data, cleaned_string_words_list)
     assert final_coordinates == DEFAULT_COORDINATES
@@ -155,13 +154,13 @@ def test_should_get_cleaned_map_data(monkeypatch):
         Nominal case
     """
     question = "Bonjour, que peux-tu me dire à propos du musée des Confluences à Lyon ?"
-    
+
     def mock_get_cleaned_string(string):
         return "musee confluences lyon"
-    
+
     def mock_get_raw_map_data(string):
         return RAW_MAP_DATA_OK
-    
+
     monkeypatch.setattr(parser, 'get_cleaned_string', mock_get_cleaned_string)
     monkeypatch.setattr(mapApi, 'get_raw_map_data', mock_get_raw_map_data)
     parser.cleaned_string_words_list = ['musee', 'confluences', 'lyon']

@@ -7,10 +7,10 @@ from flask import Flask, request, redirect, url_for, render_template, jsonify
 import os
 
 from . import app
-from src.errors import HereNetworkError, HereBadRequestError, HereJsonError, WikiNetworkError, WikiBadRequestError, WikiJsonError
-from src.api.map_api import MapApi
-from src.api.wiki_api import WikiApi
 from config.settings import DEFAULT_COORDINATES, DEFAULT_TITLE, DEFAULT_EXTRACT, POSITIVE_GRANDPY_MESSAGES, NEGATIVE_GRANDPY_MESSAGES, DEFAULT_RESPONSE
+from grandpy.errors import HereNetworkError, HereBadRequestError, HereJsonError, WikiNetworkError, WikiBadRequestError, WikiJsonError
+from grandpy.api.map_api import MapApi
+from grandpy.api.wiki_api import WikiApi
 
 @app.route('/')
 def index():

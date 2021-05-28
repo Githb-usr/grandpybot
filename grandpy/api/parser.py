@@ -16,12 +16,12 @@ class Parser:
         """ Constructor """
         self.cleaned_string = ''
         self.cleaned_string_words_list = []
-        
+
     def refuse_empty_string(self, raw_string):
         """
             We check that the user input value is not empty or made up of spaces
             :param: raw_string is a string
-            :return: a string "no_data" indicating that the response is empty 
+            :return: a string "no_data" indicating that the response is empty
             or consists of spaces
             :rtype: string
         """
@@ -58,7 +58,7 @@ class Parser:
         no_quote_letter_data = re.sub(r"(\s[a-z])'", " ", raw_string)
         # We delete the special characters except the hyphen
         return re.sub(r'[^\-\w\s]','',no_quote_letter_data)
-    
+
     def keep_relevent_part(self, raw_string):
         """
             String cleaning to facilitate comparisons, step 3
@@ -67,14 +67,14 @@ class Parser:
             :rtype: string
             Example : "toi qui sait tout, dis-moi ou se trouve la gare de lyon
             à paris" --> "la gare de lyon a paris"
-        """        
+        """
         regex_result = []
         # We apply the different predefined regex
         for regex in PARSER_REGEX:
             string = re.match(regex[0], raw_string)
             if string is not None:
                 regex_result.append(string[regex[1]].strip())
-                
+
         if not regex_result:
             return raw_string
         # regex_result being a list, we return only its content which is a string
@@ -98,7 +98,7 @@ class Parser:
         cleaned_data_list = [i for i in cleaned_data_list if i != value_to_delete]
 
         return cleaned_data_list
-    
+
     def get_clean_stopwords_list(self):
         """
             Remove accents in predefined stopwords list
@@ -109,10 +109,10 @@ class Parser:
         for word in STOPWORDS:
             clean_word = self.remove_accented_characters(word)
             clean_stopwords_list.append(clean_word.strip())
-            
+
         # We delete the duplicates
         clean_stopwords_list = list(set(clean_stopwords_list))
-            
+
         return clean_stopwords_list
 
     def remove_stopwords(self, raw_list, clean_stopwords_list):
@@ -144,7 +144,7 @@ class Parser:
         if self.refuse_empty_string(raw_string) == NO_DATA:
             print("La question de l'utilisateur est vide ou constituée d'espaces.")
             return NO_DATA
-        
+
         # We remove any accents and special characters (punctuation and others)
         no_accent_data = self.remove_accented_characters(raw_string)
         no_special_characters_data = self.remove_special_characters(no_accent_data)
