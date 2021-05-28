@@ -14,6 +14,10 @@ from src.errors import HereNetworkError, HereJsonError, HereBadRequestError
 mapApi = MapApi()
 parser = Parser()
 
+##########################################################
+############### Test of get_raw_map_data() ###############
+##########################################################
+
 def test_should_get_raw_map_data(monkeypatch):
     """
         Test of get_raw_map_data(), case 1
@@ -23,29 +27,75 @@ def test_should_get_raw_map_data(monkeypatch):
     
     class MockRequestsGet:
         def __init__(self, url, params=None):
-            self.status_code = 200
+            pass
         def json(self):
             return { 'items': RAW_MAP_DATA_OK }
+        def raise_for_status(self):
+            pass
 
     monkeypatch.setattr(requests, 'get', MockRequestsGet)
     assert mapApi.get_raw_map_data(cleaned_question) == RAW_MAP_DATA_OK
 
-# def test_should_get_raw_map_data_but_request_fail(monkeypatch):
-#     """
-#         Test of get_raw_map_data(), case 2
-#         Status code != 200
-#     """
-#     with pytest.raises(HereBadRequestError):
-#         cleaned_question = "musee confluences lyon"
+def test_should_get_raw_map_data_but_connection_fail(monkeypatch):
+    """
+        Test of get_raw_map_data(), case 2
+        Unable to connect to the API
+    """
+    with pytest.raises(HereNetworkError):
+        cleaned_question = "musee confluences lyon"
         
-#         class MockRequestsGet:
-#             def __init__(self, url, params=None):
-#                 self.status_code = 503
-#             def json(self):
-#                 return { 'items': RAW_MAP_DATA_OK }
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                raise requests.HTTPError('Unable to connect to the API')
+            def json(self):
+                pass
+            def raise_for_status(self):
+                pass
 
-#         monkeypatch.setattr(requests, 'get', MockRequestsGet)
-#         mapApi.get_raw_map_data(cleaned_question)
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        mapApi.get_raw_map_data(cleaned_question)
+        
+def test_should_get_raw_map_data_but_bad_request(monkeypatch):
+    """
+        Test of get_raw_map_data(), case 3
+        Status code != 2xx
+    """
+    with pytest.raises(HereBadRequestError):
+        cleaned_question = "musee confluences lyon"
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                pass
+            def raise_for_status(self):
+                raise requests.HTTPError('Status code other than 2xx')
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        mapApi.get_raw_map_data(cleaned_question)
+        
+def test_should_get_raw_map_data_but_key_error(monkeypatch):
+    """
+        Test of get_raw_map_data(), case 4
+        We call a key that does not exist in the JSON response
+    """
+    with pytest.raises(HereJsonError):
+        cleaned_question = "musee confluences lyon"
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                return { }
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        mapApi.get_raw_map_data(cleaned_question)
+
+##########################################################
+########## Test of get_filtered_map_data_list() ##########
+##########################################################
 
 def test_should_get_filtered_map_data_list(monkeypatch):
     """
@@ -94,7 +144,11 @@ def test_should_get_filtered_map_data_list_but_no_map_data(monkeypatch):
     monkeypatch.setattr(parser, 'get_cleaned_string', mock_get_cleaned_string)
     final_coordinates = mapApi.get_filtered_map_data_list(raw_map_data, cleaned_string_words_list)
     assert final_coordinates == DEFAULT_COORDINATES
- 
+
+##########################################################
+############# Test of get_cleaned_map_data() #############
+##########################################################
+
 def test_should_get_cleaned_map_data(monkeypatch):
     """
         Test of get_cleaned_map_data(), case 1
@@ -114,7 +168,7 @@ def test_should_get_cleaned_map_data(monkeypatch):
     cleaned_map_data = mapApi.get_cleaned_map_data(question)
     assert cleaned_map_data == (45.73374, 4.81744)
 
-def test_should_get_default_coordinates_but_empty_or_spaces_string(monkeypatch):
+def test_should_get_cleaned_map_data_but_empty_or_spaces_string(monkeypatch):
     """
         Test of get_cleaned_map_data(), case 2
         Spaces or empty user question case
