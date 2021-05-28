@@ -7,14 +7,16 @@ import sys
 
 from config.settings import NO_DATA, DEFAULT_COORDINATES, DEFAULT_WIKI_DATA
 from tests.raw_data_for_tests import NO_WIKI_DATA, RAW_WIKI_DATA_PAGE_TITLE, RAW_WIKI_COORDINATES, RAW_WIKI_EXTRACT, RAW_WIKI_PAGE_TITLE_AND_COORDINATES
-from src import MapApi
 from src import Parser
 from src import WikiApi
 from src.errors import WikiNetworkError, WikiJsonError, WikiBadRequestError
 
-mapApi = MapApi()
 parser = Parser()
 wikiApi = WikiApi()
+
+##########################################################
+############### Test of wiki_page_title() ################
+##########################################################
 
 def test_should_get_wiki_page_title(monkeypatch):
     """
@@ -25,7 +27,7 @@ def test_should_get_wiki_page_title(monkeypatch):
     
     class MockRequestsGet:
         def __init__(self, url, params=None):
-            self.status_code = 200
+            pass
         def json(self):
             return { "query": {
                         "search": [
@@ -35,9 +37,72 @@ def test_should_get_wiki_page_title(monkeypatch):
                         ]
                     }
                 }
+        def raise_for_status(self):
+            pass
 
     monkeypatch.setattr(requests, 'get', MockRequestsGet)
     assert wikiApi.get_wiki_page_title(cleaned_question) == RAW_WIKI_DATA_PAGE_TITLE
+
+def test_should_get_wiki_page_title_but_connection_fail(monkeypatch):
+    """
+        Test of wiki_page_title(), case 2
+        Unable to connect to the API
+    """
+    with pytest.raises(WikiNetworkError):
+        cleaned_question = "notre-dame paris"
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                raise requests.HTTPError('Unable to connect to the API')
+            def json(self):
+                pass
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_page_title(cleaned_question)
+
+def test_should_get_wiki_page_title_but_bad_request(monkeypatch):
+    """
+        Test of wiki_page_title(), case 3
+        Status code != 2xx
+    """
+    with pytest.raises(WikiBadRequestError):
+        cleaned_question = "notre-dame paris"
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                pass
+            def raise_for_status(self):
+                raise requests.HTTPError('Status code other than 2xx')
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_page_title(cleaned_question)
+
+def test_should_get_wiki_page_title_but_key_error(monkeypatch):
+    """
+        Test of wiki_page_title(), case 4
+        We call a key that does not exist in the JSON response
+    """
+    with pytest.raises(WikiJsonError):
+        cleaned_question = "notre-dame paris"
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                return { }
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_page_title(cleaned_question)
+
+##########################################################
+############# Test of get_wiki_coordinates() #############
+##########################################################
 
 def test_should_get_wiki_coordinates(monkeypatch):
     """
@@ -60,9 +125,72 @@ def test_should_get_wiki_coordinates(monkeypatch):
                         }
                     }
                 }
+        def raise_for_status(self):
+                pass
 
     monkeypatch.setattr(requests, 'get', MockRequestsGet)
     assert wikiApi.get_wiki_coordinates(wiki_page_title) == (48.853056, 2.349722)
+
+def test_should_get_wiki_coordinates_but_connection_fail(monkeypatch):
+    """
+        Test of get_wiki_coordinates(), case 2
+        Unable to connect to the API
+    """
+    with pytest.raises(WikiNetworkError):
+        wiki_page_title = RAW_WIKI_DATA_PAGE_TITLE
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                raise requests.HTTPError('Unable to connect to the API')
+            def json(self):
+                pass
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_coordinates(wiki_page_title)
+
+def test_should_get_wiki_coordinates_but_bad_request(monkeypatch):
+    """
+        Test of get_wiki_coordinates(), case 3
+        Status code != 2xx
+    """
+    with pytest.raises(WikiBadRequestError):
+        wiki_page_title = RAW_WIKI_DATA_PAGE_TITLE
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                pass
+            def raise_for_status(self):
+                raise requests.HTTPError('Status code other than 2xx')
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_coordinates(wiki_page_title)
+
+def test_should_get_wiki_coordinates_but_key_error(monkeypatch):
+    """
+        Test of get_wiki_coordinates(), case 4
+        We call a key that does not exist in the JSON response
+    """
+    with pytest.raises(WikiJsonError):
+        wiki_page_title = RAW_WIKI_DATA_PAGE_TITLE
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                return { }
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_coordinates(wiki_page_title)
+
+##########################################################
+############### Test of get_wiki_extract() ###############
+##########################################################
 
 def test_should_get_wiki_extract(monkeypatch):
     """
@@ -73,7 +201,7 @@ def test_should_get_wiki_extract(monkeypatch):
     
     class MockRequestsGet:
             def __init__(self, url, params=None):
-                self.status_code = 200
+                pass
             def json(self):
                 return { "query": {
                             "pages": {
@@ -83,9 +211,72 @@ def test_should_get_wiki_extract(monkeypatch):
                             }
                         }
                     }
+            def raise_for_status(self):
+                pass
 
     monkeypatch.setattr(requests, 'get', MockRequestsGet)
     assert wikiApi.get_wiki_extract(wiki_page_title) == RAW_WIKI_EXTRACT
+
+def test_should_get_wiki_extract_but_connection_fail(monkeypatch):
+    """
+        Test of wiki_page_title(), case 2
+        Unable to connect to the API
+    """
+    with pytest.raises(WikiNetworkError):
+        wiki_page_title = RAW_WIKI_DATA_PAGE_TITLE
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                raise requests.HTTPError('Unable to connect to the API')
+            def json(self):
+                pass
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_extract(wiki_page_title)
+
+def test_should_get_wiki_extract_but_bad_request(monkeypatch):
+    """
+        Test of wiki_page_title(), case 3
+        Status code != 2xx
+    """
+    with pytest.raises(WikiBadRequestError):
+        wiki_page_title = RAW_WIKI_DATA_PAGE_TITLE
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                pass
+            def raise_for_status(self):
+                raise requests.HTTPError('Status code other than 2xx')
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_extract(wiki_page_title)
+
+def test_should_get_wiki_extract_but_key_error(monkeypatch):
+    """
+        Test of wiki_page_title(), case 4
+        We call a key that does not exist in the JSON response
+    """
+    with pytest.raises(WikiJsonError):
+        wiki_page_title = RAW_WIKI_DATA_PAGE_TITLE
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                return { }
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_extract(wiki_page_title)
+
+##########################################################
+###### Test of get_wiki_page_title_and_coordinates() #####
+##########################################################
 
 def test_should_get_wiki_page_title_and_coordinates(monkeypatch):
     """
@@ -104,6 +295,8 @@ def test_should_get_wiki_page_title_and_coordinates(monkeypatch):
                             ]
                         }
                     }
+            def raise_for_status(self):
+                pass
 
     monkeypatch.setattr(requests, 'get', MockRequestsGet)
     assert wikiApi.get_wiki_page_title_and_coordinates(here_coordinates) == {
@@ -118,6 +311,67 @@ def test_should_get_wiki_page_title_and_coordinates_but_no_here_coordinates(monk
     """
     here_coordinates = NO_DATA
     assert wikiApi.get_wiki_page_title_and_coordinates(here_coordinates) == NO_DATA
+    
+def test_should_get_wiki_page_title_and_coordinates_but_connection_fail(monkeypatch):
+    """
+        Test of wiki_page_title(), case 3
+        Unable to connect to the API
+    """
+    with pytest.raises(WikiNetworkError):
+        here_coordinates = (48.89746, 2.38344)
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                raise requests.HTTPError('Unable to connect to the API')
+            def json(self):
+                pass
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_page_title_and_coordinates(here_coordinates)
+
+def test_should_get_wiki_page_title_and_coordinates_but_bad_request(monkeypatch):
+    """
+        Test of wiki_page_title(), case 4
+        Status code != 2xx
+    """
+    with pytest.raises(WikiBadRequestError):
+        here_coordinates = (48.89746, 2.38344)
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                pass
+            def raise_for_status(self):
+                raise requests.HTTPError('Status code other than 2xx')
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_page_title_and_coordinates(here_coordinates)
+
+def test_should_get_wiki_page_title_and_coordinates_but_key_error(monkeypatch):
+    """
+        Test of wiki_page_title(), case 5
+        We call a key that does not exist in the JSON response
+    """
+    with pytest.raises(WikiJsonError):
+        here_coordinates = (48.89746, 2.38344)
+        
+        class MockRequestsGet:
+            def __init__(self, url, params=None):
+                pass
+            def json(self):
+                return { }
+            def raise_for_status(self):
+                pass
+
+        monkeypatch.setattr(requests, 'get', MockRequestsGet)
+        wikiApi.get_wiki_page_title_and_coordinates(here_coordinates)
+
+##########################################################
+######### Test of get_first_complete_wiki_data() #########
+##########################################################
 
 def test_should_get_first_complete_wiki_data(monkeypatch):
     """
@@ -155,7 +409,11 @@ def test_should_get_first_complete_wiki_data_but_empty_question(monkeypatch):
     """
     cleaned_question = NO_DATA
     assert wikiApi.get_first_complete_wiki_data(cleaned_question) == DEFAULT_WIKI_DATA
-    
+
+##########################################################
+######### Test of get_second_complete_wiki_data() ########
+##########################################################
+
 def test_should_get_second_complete_wiki_data(monkeypatch):
     """
         Test of get_second_complete_wiki_data(), case 1

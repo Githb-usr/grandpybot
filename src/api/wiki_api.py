@@ -33,21 +33,20 @@ class WikiApi:
         }
         try:
             result = requests.get(WIKI_API_URL, params = params)
-        except:
+        except requests.RequestException:
             print("The connection to the Wikipedia API (for page title) has failed.")
             raise WikiNetworkError()
         else:
             try:
-                if result.status_code == 200:
-                    data = result.json()
-            except:
+                result.raise_for_status()
+                data = result.json()
+            except requests.HTTPError:
                 print("Bad request during WikipediaWikiMapApi.get_wiki_page_title().")
                 raise WikiBadRequestError()
             else:
                 try:
-                    if 'query' in data.keys():
-                        return data["query"]["search"][0]["title"]
-                except:
+                    return data["query"]["search"][0]["title"]
+                except (KeyError, IndexError):
                     print("The JSON does not contain the page title.")
                     raise WikiJsonError()
 
@@ -67,24 +66,23 @@ class WikiApi:
         }
         try:
             result = requests.get(WIKI_API_URL, params = params)
-        except:
+        except requests.RequestException:
             print("The connection to the Wikipedia API (for coordinates) has failed.")
             raise WikiNetworkError()
         else:
             try:
-                if result.status_code == 200:
-                    data = result.json()
-            except:
+                result.raise_for_status()
+                data = result.json()
+            except requests.HTTPError:
                 print("Bad request during WikipediaWikiMapApi.get_wiki_coordinates().")
                 raise WikiBadRequestError()
             else:
                 try:
-                    if 'query' in data.keys() and list(data["query"]["pages"].values())[0]["coordinates"][0]["lat"]:
-                        return (
-                            list(data["query"]["pages"].values())[0]["coordinates"][0]["lat"],
-                            list(data["query"]["pages"].values())[0]["coordinates"][0]["lon"]
-                            )
-                except:
+                    return (
+                        list(data["query"]["pages"].values())[0]["coordinates"][0]["lat"],
+                        list(data["query"]["pages"].values())[0]["coordinates"][0]["lon"]
+                        )
+                except (KeyError, IndexError):
                     print("JSON does not contain coordinates.")
                     raise WikiJsonError()
 
@@ -107,21 +105,20 @@ class WikiApi:
         }
         try:
             result = requests.get(WIKI_API_URL, params = params)
-        except:
+        except requests.RequestException:
             print("The connection to the Wikipedia API (for extract) has failed.")
             raise WikiNetworkError()
         else:
             try:
-                if result.status_code == 200:
-                    data = result.json()
-            except:
+                result.raise_for_status()
+                data = result.json()
+            except requests.HTTPError:
                 print("Bad request during WikipediaWikiMapApi.get_wiki_extract().")
                 raise WikiBadRequestError()
             else:
                 try:
-                    if 'query' in data.keys() and list(data['query']['pages'].values())[0]['extract']:
-                        return list(data['query']['pages'].values())[0]['extract']
-                except:
+                    return list(data['query']['pages'].values())[0]['extract']
+                except (KeyError, IndexError):
                     print("JSON does not contain an extract.")
                     raise WikiJsonError()
 
@@ -149,27 +146,26 @@ class WikiApi:
         }
         try:
             result = requests.get(WIKI_API_URL, params = params)
-        except:
+        except requests.RequestException:
             print("The connection to the Wikipedia API (for page title & coordinates) has failed.")
             raise WikiNetworkError()
         else:
             # If the request succeeds, we we retrieve only the data we are
             # interested in among all those present in the JSON obtained
             try:
-                if result.status_code == 200:
-                    raw_data = result.json()
-            except:
+                result.raise_for_status()
+                raw_data = result.json()
+            except requests.HTTPError:
                 print("Bad request during get_page_title.")
                 raise WikiBadRequestError()
             else:
                 try:
-                    if 'query' in raw_data.keys() and raw_data['query']['geosearch']:
-                        data = raw_data['query']['geosearch'][0]
+                    data = raw_data['query']['geosearch'][0]
                     return {
                             "page_title": data['title'],
                             "coordinates": (data['lat'], data['lon'])
                             }
-                except:
+                except (KeyError, IndexError):
                     print("JSON does not contain page title & coordinates.")
                     raise WikiJsonError()
 

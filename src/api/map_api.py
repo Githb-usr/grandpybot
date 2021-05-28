@@ -37,25 +37,23 @@ class MapApi:
             }
         try:
             result = requests.get(MAP_API_URL, params = params)
-        except:
+        except requests.RequestException:
             print("The connection to the Here.com API has failed.")
             raise HereNetworkError()
         else:
             # If the request succeeds, we return the "items" key (which contains
             # the information we are interested in) of the json returned by the API
             try:
-                if result.status_code == 200:
-                    json_data = {}
-            except:
+                result.raise_for_status()
+                json_data = {}
+            except requests.HTTPError:
                 print("Bad request during MapApi.get_raw_map_data.")
                 raise HereBadRequestError()
             else:
                 try:
-                    if 'items' in result.json() and len(result.json()['items']) > 0:
-                        json_data = result.json()['items']
-                        
-                        return json_data
-                except:
+                    json_data = result.json()['items']
+                    return json_data
+                except KeyError:
                     print("JSON does not contain map_data.")
                     raise HereJsonError
 

@@ -6,6 +6,10 @@ from src import Parser
 
 parser = Parser()
 
+##########################################################
+############# Test of refuse_empty_string() ##############
+##########################################################
+
 def test_should_refuse_empty_string():
     """
         Test of refuse_empty_string(), Case 1
@@ -26,6 +30,10 @@ def test_should_refuse_spaces_string():
     
     assert refusal == NO_DATA
 
+##########################################################
+########## Test of remove_accented_characters() ##########
+##########################################################
+
 def test_should_remove_all_accented_characters():
     """
         Test of remove_accented_characters()
@@ -34,7 +42,11 @@ def test_should_remove_all_accented_characters():
     cleaned_question = parser.remove_accented_characters(question)
     
     assert cleaned_question == "bonjour, @que peux-tu me dire a propos du musee # des <confluences> a lyon ?"
-    
+
+##########################################################
+########## Test of remove_special_characters() ###########
+##########################################################
+
 def test_should_remove_all_special_characters():
     """
         Test of remove_special_characters()
@@ -43,6 +55,10 @@ def test_should_remove_all_special_characters():
     cleaned_question = parser.remove_special_characters(question)
     
     assert cleaned_question == "bonjour que peux-tu me dire ami a propos du musee  des confluences a lyon "
+
+##########################################################
+############# Test of keep_relevent_part() ###############
+##########################################################
 
 def test_should_keep_relevent_part_regex_ok():
     """
@@ -64,6 +80,10 @@ def test_should_keep_relevent_part_regex_have_no_effect():
     
     assert cleaned_question == "bonjour que peux-tu me dire ami sur le musee des confluences a lyon"
 
+##########################################################
+############ Test of get_cleaned_data_list() #############
+##########################################################
+
 def test_should_get_cleaned_data_list():
     """
         Test of get_cleaned_data_list()
@@ -72,7 +92,11 @@ def test_should_get_cleaned_data_list():
     cleaned_data_list = parser.get_cleaned_data_list(question)
     
     assert cleaned_data_list.sort() == ['musee', 'des', 'confuences', 'a', 'lyon'].sort()
-    
+
+##########################################################
+############## Test of remove_stopwords() ################
+##########################################################
+
 def test_should_remove_all_stop_words():
     """
         Test of remove_stopwords()
@@ -83,7 +107,11 @@ def test_should_remove_all_stop_words():
     parsed_question = parser.remove_stopwords(cleaned_data_list, cleaned_stopwords_list)
     
     assert parsed_question.sort() == ['musee', 'confuences', 'lyon'].sort()
-    
+
+##########################################################
+############# Test of get_cleaned_string() ###############
+##########################################################
+
 def test_should_get_cleaned_string(monkeypatch):
     """
         Test of get_cleaned_string(), case 1
