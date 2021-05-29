@@ -417,11 +417,11 @@ footer {
     /* Global */
     /* ****** */
     h1 {
-        font-size: 150%;
+        font-size: 140%;
     }
 
     h2, label {
-        font-size: 125%;
+        font-size: 110%;
     }
 
     label {
@@ -444,11 +444,11 @@ footer {
     }
     
     #main-title {
-        font-size: 260%;
+        font-size: 240%;
     }
     
     #sub-title {
-        font-size: 136%;
+        font-size: 130%;
     }
     
     /* Main part */
@@ -544,6 +544,6 @@ footer {
     }
     
     #github-logo {
-        width: 32%;
+        width: 30%;
     }
 }
