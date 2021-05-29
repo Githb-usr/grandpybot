@@ -61,7 +61,7 @@ form.addEventListener("submit", function (event) {
           // We change the title of the map and display the map
           const mapTitle = document.getElementById('map-title');
           if(wikiData["wiki_page_title"] != defaultTitle) {
-            mapTitle.innerText = 'Situez "' + wikiData["wiki_page_title"] + '" sur la carte'
+            mapTitle.innerText = 'Situe "' + wikiData["wiki_page_title"] + '" sur la carte'
           } else {
             mapTitle.innerText = 'Pas de carte à afficher, désolé...'
           }
