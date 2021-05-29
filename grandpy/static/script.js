@@ -61,7 +61,7 @@ form.addEventListener("submit", function (event) {
           // We change the title of the map and display the map
           const mapTitle = document.getElementById('map-title');
           if(wikiData["wiki_page_title"] != defaultTitle) {
-            mapTitle.innerText = 'Situez "' + wikiData["wiki_page_title"] + '" sur la carte'
+            mapTitle.innerText = 'Situe "' + wikiData["wiki_page_title"] + '" sur la carte'
           } else {
             mapTitle.innerText = 'Pas de carte à afficher, désolé...'
           }
@@ -146,25 +146,16 @@ function createNegativeResponse(p2Negative) {
   return div
 }
 
-// Loader
-// Fonction ajoutant ou supprimant le 'loader'
+// Display loader
 function displayLoader() {
-  let questionBloc = document.querySelector('.chat-question-and-loader-bloc');
-  // Ajout de l'image de loader
-  let div1 = document.createElement('div');
-  div1.id = "loader-box";
-  let div2 = document.createElement('div');
-  div2.id = "loader";
-  div1.appendChild(div2);
-  questionBloc.appendChild(div1)
+  let htmlElement = document.querySelector("html");
+  htmlElement.classList.add("loader");
 }
-  // Suppression de l'image de loading
+
+// Hide loader
 function hideLoader() {
-  // Suppression de l'élement #box_loader
-  var loader = document.getElementById('loader-box');
-  if (loader) {
-    loader.parentNode.removeChild(loader);
-  }
+  let htmlElement = document.querySelector("html");
+  htmlElement.classList.remove("loader");
 }
 
 /*

@@ -57,5 +57,5 @@ DEFAULT_RESPONSE = {
                 "default_title": DEFAULT_TITLE,
                 "default_extract": DEFAULT_EXTRACT,
                 "positive_messages": POSITIVE_GRANDPY_MESSAGES,
-                "negative_messages": NEGATIVE_GRANDPY_MESSAGES        
+                "negative_messages": NEGATIVE_GRANDPY_MESSAGES
             }

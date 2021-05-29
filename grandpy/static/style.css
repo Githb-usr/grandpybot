@@ -9,6 +9,7 @@ html, body {
 }
 
 body {
+    height: 100%;
     background-color: #F7F7F7;
     font-family: 'Calibri', 'Trebuchet MS', sans-serif;
 }
@@ -168,23 +169,8 @@ main {
 }
 
 /* Loader */
-
-#loader-box {
-    display: flex;
-    width: 20%;
-    justify-content: center;
-    align-items: center;
-}
-
-#loader {
-    position: relative;
-    z-index: 9999;
-    border: 10px solid #f3f3f3; /* Light grey */
-    border-top: 10px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 2s linear infinite;
+html.loader, html.loader * {
+    cursor: wait !important;
 }
 
 /* Map part */
@@ -266,31 +252,6 @@ footer {
     padding: 0 7px 0 0;
     text-align: center; 
 }
-
-@-webkit-keyframes spin {
-    0% { -webkit-transform: rotate(0deg); }
-    100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.hide-loader{
-display:none;
-}
-
-/* #loader {
-    position: inherit;
-    z-index: 9999;
-    background : url('img/loader.gif') 50% 50% no-repeat;
-    top: 50%;
-    left: 50%;
-    height: 4%;
-    width: 4%;
-    cursor : wait;
-} */
 
 /* ******************** */
 /* Responsive : tablets */
@@ -456,11 +417,11 @@ display:none;
     /* Global */
     /* ****** */
     h1 {
-        font-size: 150%;
+        font-size: 140%;
     }
 
     h2, label {
-        font-size: 125%;
+        font-size: 110%;
     }
 
     label {
@@ -483,11 +444,11 @@ display:none;
     }
     
     #main-title {
-        font-size: 260%;
+        font-size: 240%;
     }
     
     #sub-title {
-        font-size: 136%;
+        font-size: 130%;
     }
     
     /* Main part */
@@ -583,6 +544,6 @@ display:none;
     }
     
     #github-logo {
-        width: 32%;
+        width: 30%;
     }
 }
