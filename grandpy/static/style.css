@@ -9,6 +9,7 @@ html, body {
 }
 
 body {
+    height: 100%;
     background-color: #F7F7F7;
     font-family: 'Calibri', 'Trebuchet MS', sans-serif;
 }
@@ -168,23 +169,8 @@ main {
 }
 
 /* Loader */
-
-#loader-box {
-    display: flex;
-    width: 20%;
-    justify-content: center;
-    align-items: center;
-}
-
-#loader {
-    position: relative;
-    z-index: 9999;
-    border: 10px solid #f3f3f3; /* Light grey */
-    border-top: 10px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin 2s linear infinite;
+html.loader, html.loader * {
+    cursor: wait !important;
 }
 
 /* Map part */
