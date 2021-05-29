@@ -4,9 +4,9 @@
 from dotenv import dotenv_values
 import requests
 
-from src.errors import WikiNetworkError, WikiJsonError, WikiBadRequestError
-from src.api.parser import Parser
 from config.settings import WIKI_API_URL, NO_DATA, DEFAULT_WIKI_DATA
+from grandpy.errors import WikiNetworkError, WikiJsonError, WikiBadRequestError
+from grandpy.api.parser import Parser
 
 class WikiApi:
     """
@@ -180,7 +180,7 @@ class WikiApi:
         """
         complete_wiki_data = {}
         cleaned_question = self.parser.get_cleaned_string(raw_string)
-        
+
         if cleaned_question == NO_DATA:
             print("La question de l'utilisateur est vide (wiki).")
             return DEFAULT_WIKI_DATA

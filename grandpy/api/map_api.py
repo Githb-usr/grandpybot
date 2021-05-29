@@ -5,8 +5,8 @@ import os
 import requests
 
 from config.settings import MAP_API_URL, NO_DATA, DEFAULT_COORDINATES
-from src.errors import HereNetworkError, HereJsonError, HereBadRequestError
-from src.api.parser import Parser
+from grandpy.errors import HereNetworkError, HereJsonError, HereBadRequestError
+from grandpy.api.parser import Parser
 
 class MapApi:
     """
@@ -76,7 +76,7 @@ class MapApi:
         # user question
         filtered_map_data_list = []
         for item in map_data_dict_list:
-            if 'address' in item.keys() and 'label' in item['address'].keys():            
+            if 'address' in item.keys() and 'label' in item['address'].keys():
                 label = item['address']['label']
                 parsed_label = self.parser.get_cleaned_string(label)
                 if len(set(string_words_list).intersection(set(parsed_label.split(' ')))) > 0:
@@ -100,7 +100,7 @@ class MapApi:
         """
         # We retrieve the parsed data from the user's question.
         cleaned_question = self.parser.get_cleaned_string(raw_string)
-        
+
         if cleaned_question == NO_DATA:
             print("La question de l'utilisateur est vide (map).")
             return DEFAULT_COORDINATES
