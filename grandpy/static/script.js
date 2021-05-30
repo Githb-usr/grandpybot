@@ -82,7 +82,7 @@ form.addEventListener("submit", function (event) {
             }, 3000);
           }
           scrollToBottom();          
-        }, 1500);
+        }, 2000);
       })
     } else {
       console.log('Bad response');
