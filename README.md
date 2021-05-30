@@ -39,9 +39,10 @@ GrandPy sends a new message: "But did I ever tell you the story of this neighbou
 # EXAMPLES OF JSON RESPONSES FROM API #
 JSON can contain several results but only the first one is shown in the examples
 
-** Here.com API **
+**Here.com API**
 
 Example URL : search for coordinates using keywords
+
 https://geocode.search.hereapi.com/v1/geocode?apiKey=9Qlt8XzxvTNNpAGkQc9TvDdKrC9P84BrgrsdjSb1IJY&lang=fr&q=musee+confluences+lyon
 
 JSON response : 
@@ -96,9 +97,10 @@ JSON response :
 ------------------------------------
 ------------------------------------
 
-** Wikipedia API **
+**Wikipedia API**
 
 Example URL1 : keyword search
+
 https://fr.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=musee%20confluencer%20lyon
 
 JSON response : 
@@ -132,6 +134,7 @@ JSON response :
 ------------------------------------
 
 Example URL2 : search for coordinates from the page title
+
 https://fr.wikipedia.org/w/api.php?action=query&format=json&titles=Musée%20des%20Confluences&redirects&prop=coordinates
 
 JSON response : 
@@ -162,6 +165,7 @@ JSON response :
 ------------------------------------
 
 Example URL3 : search for the page extract from the page title
+
 https://fr.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&exchars=1200&exintro=true&titles=Musée%20des%20Confluences&explaintext=1
 
 JSON response : 
@@ -185,6 +189,7 @@ JSON response :
 ------------------------------------
 
 Example URL4 : search for page title and wiki coordinates from Here coordinates
+
 https://fr.wikipedia.org/w/api.php?action=query&format=json&list=geosearch&gscoord=45.73374|4.81744&gsradius=250&gslimit=1&utf8=
 
 JSON response : 
