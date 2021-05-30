@@ -4,7 +4,7 @@
 {% block main %}
 <header>
     <p id="header-logo">
-        <img src="./static/img/grandpybot.png" alt="Logo GrandPy Bot" id="grandpybot-logo" />
+        <img src="{{ url_for('static', filename='img/grandpybot.png') }}" alt="Logo GrandPy Bot" id="grandpybot-logo" />
     </p>
     <div id="header-text">
         <p id="main-title">GRANDPY BOT</p>
@@ -20,22 +20,24 @@
         <section id="chat-section">
             <h2 id="chat-title">
                 Tes questions et les réponses de GrandPy 
-                <img src="./static/img/fleche_bas_droite.png" alt="Flêche vers le bas" class="fleche-bas-droite" />
+                <img src="{{ url_for('static', filename='img/fleche_bas_droite.png') }}" alt="Flèche vers le bas" class="fleche-bas-droite" />
             </h2>
             <div id="chat-area"></div>
         </section>
         <section id="map-section">
-            <h2>
-                <span id="map-title">Une carte apparaitra ici </span>
-                <img src="./static/img/fleche_bas_droite.png" alt="Flêche vers le bas" class="fleche-bas-droite" />
+            <h2 id="map-title">
+                Une carte apparaitra ici 
+                <img src="{{ url_for('static', filename='img/fleche_bas_droite.png') }}" alt="Flèche vers le bas" class="fleche-bas-droite" />
             </h2>
             <div id="map-area"></div>
         </section>
     </section>
     <form id="user-question-form">
-        <label for="user-question">Pose ta question ici <img src="./static/img/fleche_bas_droite.png" alt="Flêche vers le bas" class="fleche-bas-droite" /></label>
+        <label for="user-question">
+            Pose ta question ici <img src="{{ url_for('static', filename='img/fleche_bas_droite.png') }}" alt="Flèche vers le bas" class="fleche-bas-droite" />
+        </label>
         <div id="input-area">
-            <input type="text" name="q" id="user-question" onfocus=this.value='' placeholder="Exemple : que peux-tu me dire à propos de la Tour Eiffel ?" />
+            <input type="text" name="q" id="user-question" onfocus=this.value='' placeholder="Ex : que sais-tu à propos de la Tour Eiffel ?" />
             <input type="submit" value="OK" id="submit-button" />
         </div>
     </form>
@@ -48,7 +50,7 @@
         </div>
         <div id="github">Code sur<br/>
             <a href="https://github.com/Githb-usr/grandpybot" target="blank">
-                <img src="./static/img/github-logo.png" alt="Logo de Github" id="github-logo" />
+                <img src="{{ url_for('static', filename='img/github-logo.png') }}" alt="Logo de Github" id="github-logo" />
             </a>
         </div>
     </div>

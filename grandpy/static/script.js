@@ -98,17 +98,14 @@ function scrollToBottom() {
 
 // We display the user question
 function displayQuestion(question) {
-  let div1 = document.createElement('div');
-  div1.className = "chat-question-and-loader-bloc";
-  let div2 = document.createElement('div');
-  div2.className = "chat-question-bloc";
+  let div = document.createElement('div');
+  div.className = "chat-question-bloc";
   let p = document.createElement('p');
   p.className = "chat-question";
   p.textContent = question;
-  div1.appendChild(div2);
-  div2.appendChild(p);
+  div.appendChild(p);
 
-  return div1;
+  return div;
 }
 
 // We select a Grandpy replica at random
@@ -125,7 +122,7 @@ function selectReplica(messagesList) {
 function displayResponse(wikiData) {
   let p = document.createElement('p');
   p.className = "chat-response";
-  p.style.marginBottom = "25px";
+  p.style.marginBottom = "20px";
   p.textContent = wikiData["wiki_extract"];
   let wikiUrl = `${WIKI_URL}/${wikiData["wiki_page_title"]}`;
   let wikiLink = document.createElement('a');
@@ -156,7 +153,7 @@ function addWikiExtract(wikiExtract) {
 // We create a negative bloc of chat (a question with its negative response)
 function createNegativeResponse(p2Negative) {
   let div = document.createElement('div');
-  div.className = "full-bloc full-negative-bloc";
+  div.className = "full-negative-bloc";
   div.appendChild(p2Negative);
 
   return div;

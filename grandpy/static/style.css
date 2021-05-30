@@ -124,16 +124,9 @@ main {
     border: 1px #000 solid;
 }
 
-.chat-question-and-loader-bloc {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin: 10px;
-}
-
 .chat-question-bloc {
-    /* position: relative; */
     width: 75%;
+    margin: 10px;
 }
 
 .chat-question {
@@ -144,7 +137,7 @@ main {
     border-radius: 15px;
 }
 
-.positive-bloc, .negative-bloc, .full-positive-bloc, .full-negative-bloc {
+.full-positive-bloc, .full-negative-bloc {
     display: flex;
     flex-direction: column;
 }
