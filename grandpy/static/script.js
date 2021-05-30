@@ -5,6 +5,7 @@ const CHAT_AREA = document.getElementById('chat-area');
 // Retrieval of the question asked + display of the answer (via AJAX)
 let form = document.querySelector("#user-question-form");
 form.addEventListener("submit", function (event) {
+  // We prevent the normal behavior of the form during its validation.
   event.preventDefault();
 
   // We send the content of the form to the server
@@ -43,43 +44,51 @@ form.addEventListener("submit", function (event) {
         let p2Negative = selectReplica(negativeMessages);
         let p2Positive = selectReplica(positiveMessages);
         let p3 = displayResponse(wikiData);
-        
+        // We display the user's question
         CHAT_AREA.appendChild(p1);
-        displayLoader()
         scrollToBottom();
         // We display the answer after a certain time
         setTimeout(function() {
-          hideLoader();
+          // Negative answer of GranPy
           if (wikiData["wiki_extract"] == defaultExtract) {
-            let nodes = [createNegativeResponse(p2Negative)];
-            CHAT_AREA.append(...nodes);
+            let negativeNodes = [createNegativeResponse(p2Negative)];
+            CHAT_AREA.append(...negativeNodes);
+          // Positive answer of GranPy
           } else {
-            let nodes = [createPositiveResponse(p2Positive, p3)];
-            CHAT_AREA.append(...nodes);
-          }
-          scrollToBottom();
-          // We change the title of the map and display the map
-          const mapTitle = document.getElementById('map-title');
-          if(wikiData["wiki_page_title"] != defaultTitle) {
-            mapTitle.innerText = 'Situe "' + wikiData["wiki_page_title"] + '" sur la carte'
-          } else {
-            mapTitle.innerText = 'Pas de carte à afficher, désolé...'
-          }
+            let positiveNodes = [createPositiveResponse(p2Positive)];
+            CHAT_AREA.append(...positiveNodes);
+            scrollToBottom();
+            displayLoader();
+            // We display the anecdote under the positive answer, after a certain time
+            setTimeout(function() {
+              hideLoader();
+              addWikiExtract(p3);
+              CHAT_AREA.append(...positiveNodes);
+              scrollToBottom();
 
-          if(data.map) {
-            displayMap(mapApiKey, data.map)
-          } else {
-            displayMap(mapApiKey, wikiData["wiki_coordinates"])
+              // We change the title of the map and display the map
+              const mapTitle = document.getElementById('map-title');
+              if(wikiData["wiki_page_title"] != defaultTitle) {
+                mapTitle.innerText = 'Situe "' + wikiData["wiki_page_title"] + '" sur la carte';
+              } else {
+                mapTitle.innerText = 'Pas de carte à afficher, désolé...';
+              }
+              // We use the coordinates from Here or Wikipedia according to those provided
+              if(data.map) {
+                displayMap(mapApiKey, data.map);
+              } else {
+                displayMap(mapApiKey, wikiData["wiki_coordinates"]);
+              }
+            }, 3000);
           }
-          
-        }, 3000);
+          scrollToBottom();          
+        }, 1500);
       })
     } else {
-      console.log('Bad response')
+      console.log('Bad response');
     }
   })
-  .catch(error => console.log('The fetch function does not work properly', error))
-
+  .catch(error => console.log('The fetch function does not work properly', error));
 })
 
 // We scroll automatically at the bottom of the chat
@@ -99,7 +108,7 @@ function displayQuestion(question) {
   div1.appendChild(div2);
   div2.appendChild(p);
 
-  return div1
+  return div1;
 }
 
 // We select a Grandpy replica at random
@@ -109,7 +118,7 @@ function selectReplica(messagesList) {
   let randomReplica = messagesList[Math.floor(Math.random() * messagesList.length)];
   p.textContent = randomReplica;
 
-  return p
+  return p;
 }
 
 // We display the Grandpy answer
@@ -124,17 +133,24 @@ function displayResponse(wikiData) {
   wikiLink.href = wikiUrl;
   p.appendChild(wikiLink);
 
-  return p
+  return p;
 }
 
-// We create a positive bloc of chat (a question with its positive response)
-function createPositiveResponse(p2Positive, p3) {
+// We create a positive bloc of chat (with GrandPy positive response)
+function createPositiveResponse(p2Positive) {
   let div = document.createElement('div');
   div.className = "full-positive-bloc";
   div.appendChild(p2Positive);
-  div.appendChild(p3);
 
-  return div
+  return div;
+}
+
+// We add GrandPy's anecdote to his positive response
+function addWikiExtract(wikiExtract) {
+  let positiveResponse = CHAT_AREA.lastChild;
+  positiveResponse.appendChild(wikiExtract);
+
+  return positiveResponse;
 }
 
 // We create a negative bloc of chat (a question with its negative response)
@@ -143,10 +159,10 @@ function createNegativeResponse(p2Negative) {
   div.className = "full-bloc full-negative-bloc";
   div.appendChild(p2Negative);
 
-  return div
+  return div;
 }
 
-// Display loader
+// Displaying the loader while waiting for answers from GrandPy
 function displayLoader() {
   let htmlElement = document.querySelector("html");
   htmlElement.classList.add("loader");
@@ -162,8 +178,6 @@ function hideLoader() {
  DISPLAY AN INTERACTIVE MAP
  **************************
 */
-// console.log("HEEEEEEEEEEEEE", coordinates)
-
 function initializeMap(apiKey) {
   //Step 1: initialize communication with the platform
   const platform = new H.service.Platform({
@@ -174,7 +188,7 @@ function initializeMap(apiKey) {
   let defaultCoordinates = {
     lat: 54.525961,
     lng: 15.255119
-  }
+  };
 
   //Step 2: initialize a map - this map is centered over Paris
   const map = new H.Map(document.getElementById('map-area'),
@@ -199,22 +213,20 @@ function displayMap(mapApiKey, mapData) {
   let coordinates = {
     lat: mapData[0],
     lng: mapData[1]
-   }
+   };
 
   const mapContainer = document.getElementById('map-area');
-  mapContainer.innerText = ''
+  mapContainer.innerText = '';
 
-  map = initializeMap(mapApiKey)
+  map = initializeMap(mapApiKey);
   // Create a marker icon from an image URL:
   const icon = new H.map.Icon('./static/img/map-marker.png');
   // Create a marker using the previously instantiated icon:
   let marker = new H.map.Marker(coordinates, { icon: icon });
   
-  map.clearContent()
+  map.clearContent();
   map.setCenter(coordinates);
   map.setZoom(13);
   // Add the marker to the map:
   map.addObject(marker);
- }
-
-// Loading spinner
+}
