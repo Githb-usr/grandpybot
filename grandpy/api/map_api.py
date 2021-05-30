@@ -22,10 +22,8 @@ class MapApi:
 
     def get_raw_map_data(self, cleaned_question):
         """
-            We get the information about the place searched by the user from
-            the API.
-            :param: cleaned_question is a string (the user question) after
-            cleaning
+            We get the information about the place searched by the user from the API.
+            :param: cleaned_question is a string (the user question) after cleaning
             :return: locations returned by the API
             :rtype: JSON
         """

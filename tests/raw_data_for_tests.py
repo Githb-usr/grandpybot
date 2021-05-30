@@ -18,16 +18,6 @@ RAW_MAP_DATA_OK = [
             "lat": 45.73374,
             "lng": 4.81744
         }
-    },
-    {
-        "title": "Musée des Confluences",
-        "address": {
-            "label": "Musée des Confluences, 28 Boulevard des Belges, 69006 Lyon, France",
-        },
-        "position": {
-            "lat": 45.77449,
-            "lng": 4.84819
-        }
     }
 ]
 
