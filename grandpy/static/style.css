@@ -249,7 +249,7 @@ footer {
 /* ******************** */
 /* Responsive : tablets */
 /* ******************** */
-@media screen and (min-width: 768px) and (max-width: 1023px)
+@media screen and (min-width: 768px) and (max-width: 1024px)
 {
     /* Global */
     /* ****** */
@@ -304,7 +304,7 @@ footer {
     
     /* Intro part */
     #intro-section {
-        order: 1;
+        order: 0;
     }
     
     #main-section {
@@ -372,7 +372,7 @@ footer {
     
     #submit-button {
         width: 8%;
-        padding: 9px;
+        padding: 11px;
         margin-top: 8px;
         font-size: 115%;
         font-weight: 800;
@@ -511,13 +511,13 @@ footer {
     }
     
     #user-question {
-        width: 82%;
+        width: 80%;
         margin: 8px 5px 0 0;
     }
     
     #submit-button {
-        width: 12%;
-        padding: 9px;
+        width: 16%;
+        padding: 11px;
         margin-top: 8px;
         font-size: 115%;
         font-weight: 800;
